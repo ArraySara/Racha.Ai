@@ -1,0 +1,85 @@
+/* Estilos globais */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #6EB043;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container central */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.form-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 320px;
+}
+
+/* Estilo da logo */
+.logo {
+    width: 80px;
+    margin-bottom: 20px;
+}
+
+/* Grupo de inputs */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+/* Botão de criar conta */
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Estilo do link para login */
+.link-box {
+    margin-top: 20px;
+}
+
+.link-box a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.link-box a:hover {
+    text-decoration: underline;
+}

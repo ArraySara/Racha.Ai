@@ -1,0 +1,15 @@
+.canva {
+  display: block;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 30px;
+}

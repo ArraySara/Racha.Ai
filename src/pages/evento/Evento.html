@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Eventos - Racha.Aí</title>
+    <link rel="stylesheet" href="../../styles/Evento.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="user-info">
+                <img src="../../assets/logo.png" alt="Logo Racha.Aí">
+                <h2>Adrielly Menezes</h2>
+                <a href="#" class="logout">Desconectar</a>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="../../pages/evento/Evento.html">Listar eventos</a></li>
+                    <li><a href="../../pages/comanda/Comanda.html">Criar evento</a></li>
+                    <li><a href="../../pages/creditos/Creditos.html">Créditos</a></li>
+                    <li><a href="../../pages/feedbacks/Feedbacks.html">Feedbacks</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <h1>Lista de eventos</h1>
+            <table class="event-list">
+                <thead>
+                    <tr>
+                        <th>Estabelecimento</th>
+                        <th>Endereço</th>
+                        <th>Data</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="event-body">
+                    <!-- Conteúdo inserido dinamicamente via JS -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    
+    <script src="../../scripts/Evento.js"></script>
+</body>
+</html>

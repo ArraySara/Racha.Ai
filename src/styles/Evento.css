@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d1e7dd;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 18%; /* Ajustar a largura da sidebar */
+    background-color: #4CAF50;
+    padding: 15px; /* Reduzir padding */
+    color: white;
+}
+
+.sidebar .user-info {
+    text-align: center;
+}
+
+.sidebar img {
+    width: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.sidebar h2 {
+    font-size: 16px; /* Reduzir tamanho da fonte */
+    margin-bottom: 5px; /* Menor espaço entre nome e imagem */
+}
+
+.logout {
+    display: block;
+    color: white;
+    margin-top: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu {
+    margin-top: 30px;
+}
+
+.menu ul {
+    list-style: none;
+    padding-left: 0; /* Remover padding lateral */
+}
+
+
+.menu li {
+    margin-bottom: 15px; /* Menor espaço entre os itens */
+}
+
+.menu a {
+    text-decoration: none;
+    font-size: 14px; /* Reduzir o tamanho da fonte */
+    color: white;
+    background-color: #388E3C;
+    padding: 8px; /* Reduzir padding do botão */
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+    border: none;
+}
+
+.menu a:hover {
+    background-color: #2e7d32;
+}
+
+.content {
+    width: 82%; /* Ajustar largura do conteúdo */
+    padding: 30px; /* Diminuir padding */
+    background-color: #8BC34A;
+}
+
+.content h1 {
+    margin-bottom: 15px; /* Ajustar margem */
+    text-align: center;
+    color: white;
+    font-size: 24px; /* Ajustar tamanho da fonte */
+}
+
+.event-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 20px; /* Adicionar margem entre o título e a tabela */
+}
+
+.event-list th, .event-list td {
+    padding: 12px; /* Ajuste de padding */
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+
+.event-list th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.event-list td {
+    font-size: 14px;
+}
+
+.event-list td:last-child {
+    text-align: center; /* Alinhar o conteúdo ao centro da célula */
+    display: flex;
+    justify-content: center; /* Centraliza os ícones horizontalmente */
+    align-items: center; /* Centraliza os ícones verticalmente */
+    gap: 10px; /* Espaçamento entre os ícones */
+    height: 100%; /* Garante que o flexbox ocupe toda a altura da célula */
+}
+.event-list .action-icons {
+    margin-left: 10px; /* Espaçamento entre os ícones */
+    width: 20px; /* Ajustar tamanho dos ícones */
+    height: 20px;
+    cursor: pointer;
+}
+
+.event-list .edit-icon {
+    color: #FFC107;
+}
+
+.event-list .delete-icon {
+    color: #F44336;
+}
+.action-icons {
+    width: 24px; /* Ajuste o tamanho do ícone */
+    height: 24px;
+    cursor: pointer;
+}
+
+.edit-icon {
+    margin-right: 10px; /* Espaçamento entre os ícones */
+}

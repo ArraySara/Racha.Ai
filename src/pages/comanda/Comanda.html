@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comanda Organizada</title>
+    <link rel="stylesheet" href="../../styles/Comanda.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="user-info">
+          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
+          <h2>Adrielly Menezes</h2>
+          <a href="../evento/Evento.html" class="logout">Desconectar</a>
+        </div>
+        <nav class="menu">
+          <ul>
+            <li><button id="btnEditar">Editar evento</button></li>
+            <li><button id="btnCriarEvento">Criar evento</button></li>
+            <li><button id="btnAdicionarProduto">Adicionar produto</button></li>
+            <li>
+              <button onclick="window.location.href = '../evento/Evento.html'">
+                Voltar
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <h1>Comanda organizada</h1>
+        <div class="pagantes">
+          <div class="pagante">Pagante: Lia - R$30,41</div>
+          <div class="pagante">Pagante: Adrielly - R$65,02</div>
+          <div class="pagante">Pagante: Sara - R$265,14</div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal para criar evento -->
+    <div id="modalCriarEvento" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Criar novo evento</h2>
+        <form id="formCriarEvento">
+          <label for="estabelecimento">Estabelecimento:</label>
+          <input
+            type="text"
+            id="estabelecimento"
+            name="estabelecimento"
+            required
+          />
+
+          <label for="dataEvento">Data do evento:</label>
+          <input type="date" id="dataEvento" name="dataEvento" required />
+
+          <label for="endereco">Endereço:</label>
+          <input type="text" id="endereco" name="endereco" required />
+
+          <label for="nomePagante">Nome do pagante:</label>
+          <input type="text" id="nomePagante" name="nomePagante" required />
+
+          <button type="submit" id="btnSalvarEvento">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal para editar evento -->
+    <div id="modalEditarEvento" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Editar evento</h2>
+        <form id="formEditarEvento">
+          <label for="editarEstabelecimento">Estabelecimento:</label>
+          <input
+            type="text"
+            id="editarEstabelecimento"
+            name="editarEstabelecimento"
+            value="88 bier"
+            required
+          />
+
+          <label for="editarDataEvento">Data do evento:</label>
+          <input
+            type="date"
+            id="editarDataEvento"
+            name="editarDataEvento"
+            value="2024-04-10"
+            required
+          />
+
+          <label for="editarEndereco">Endereço:</label>
+          <input
+            type="text"
+            id="editarEndereco"
+            name="editarEndereco"
+            value="R. Nunes Valente, 1355 - Aldeota"
+            required
+          />
+
+          <label for="editarNomePagante">Nome do pagante:</label>
+          <ul>
+            <li>Adrielly</li>
+            <li>Lia</li>
+            <li>Sara</li>
+          </ul>
+
+          <button type="submit" id="btnSalvarEdicaoEvento">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal para adicionar produto -->
+    <div id="modalAdicionarProduto" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Adicionar produto</h2>
+        <form id="formAdicionarProduto">
+          <label for="nomeProduto">Nome:</label>
+          <input
+            type="text"
+            id="nomeProduto"
+            name="nomeProduto"
+            placeholder="Digite o nome do produto"
+            required
+          />
+
+          <label for="precoProduto">Preço:</label>
+          <input
+            type="number"
+            id="precoProduto"
+            name="precoProduto"
+            placeholder="Digite o preço"
+            required
+          />
+
+          <label for="quantidadeProduto">Quantidade:</label>
+          <input
+            type="number"
+            id="quantidadeProduto"
+            name="quantidadeProduto"
+            placeholder="Digite a quantidade"
+            required
+          />
+
+          <label for="paganteProduto">Pagante:</label>
+          <select id="paganteProduto" name="paganteProduto" required>
+            <option value="Adrielly">Adrielly</option>
+            <option value="Lia">Lia</option>
+            <option value="Sara">Sara</option>
+          </select>
+
+          <button type="submit" id="btnSalvarProduto">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="../../scripts/Comanda.js"></script>
+  </body>
+</html>
