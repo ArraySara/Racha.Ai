@@ -232,3 +232,84 @@ function editarProduto(produtoId) {
     });
 }
 </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #product-list {
+            list-style: none;
+            padding: 0;
+        }
+        #product-list li {
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Lista de Produtos</h1>
+
+<!-- Formulário para adicionar produtos -->
+<input type="text" id="product-name" placeholder="Nome do produto">
+<button onclick="addProduct()">Adicionar Produto</button>
+
+<!-- Lista de produtos -->
+<ul id="product-list"></ul>
+
+<script>
+    // Função para adicionar produtos
+    function addProduct() {
+        const productName = document.getElementById("product-name").value;
+        if (productName === "") {
+            alert("O nome do produto não pode estar vazio!");
+            return;
+        }
+
+        const productList = document.getElementById("product-list");
+
+        // Cria um item de lista (li) para o novo produto
+        const listItem = document.createElement("li");
+        listItem.textContent = productName;
+
+        // Cria um botão de excluir
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Excluir";
+        deleteButton.onclick = function () {
+            productList.removeChild(listItem);
+        };
+
+        // Adiciona o botão de excluir ao item de lista
+        listItem.appendChild(deleteButton);
+
+        // Adiciona o item de lista à lista de produtos
+        productList.appendChild(listItem);
+
+        // Limpa o campo de entrada de texto
+        document.getElementById("product-name").value = "";
+    }
+</script>
+
+</body>
+</html>
