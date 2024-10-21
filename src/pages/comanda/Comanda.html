@@ -159,3 +159,47 @@
     <script src="../../scripts/Comanda.js"></script>
   </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Taxa de Serviço</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora de Taxa de Serviço (10%)</h1>
+
+    <label for="comanda">Valor da Comanda:</label>
+    <input type="number" id="comanda" placeholder="Digite o valor da comanda">
+    <br>
+    <button onclick="calcularTotal()">Calcular Total com 10%</button>
+
+    <h2 id="resultado"></h2>
+
+    <script>
+        function calcularTotal() {
+            // Pega o valor da comanda
+            var comanda = parseFloat(document.getElementById("comanda").value);
+
+            // Calcula os 10% e o total
+            var taxaServico = comanda * 0.10;
+            var totalComTaxa = comanda + taxaServico;
+
+            // Exibe o resultado
+            document.getElementById("resultado").innerHTML = "Total com 10%: R$ " + totalComTaxa.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
