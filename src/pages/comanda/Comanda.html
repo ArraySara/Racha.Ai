@@ -203,3 +203,32 @@
 
 </body>
 </html>
+
+<!-- Botão para editar produto -->
+<button onclick="editarProduto(produtoId)">Editar</button>
+
+<script>
+function editarProduto(produtoId) {
+    // Exibir modal de edição (ou navegue para uma página de edição)
+    const novoNome = prompt("Digite o novo nome do produto:");
+    const novaQuantidade = prompt("Digite a nova quantidade:");
+
+    // Enviar os dados editados para o backend
+    fetch(`/comanda/editar/${produtoId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nome: novoNome,
+            quantidade: novaQuantidade
+        })
+    }).then(response => {
+        if (response.ok) {
+            // Atualiza a interface com os novos dados
+            document.getElementById(`nome-produto-${produtoId}`).textContent = novoNome;
+            document.getElementById(`quantidade-produto-${produtoId}`).textContent = novaQuantidade;
+        }
+    });
+}
+</script>
