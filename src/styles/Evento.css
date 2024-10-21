@@ -1,143 +1,155 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #d1e7dd;
+  font-family: "Arial", sans-serif;
+  background-color: #d1e7dd;
 }
 
 .container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 
-.sidebar {
-    width: 18%; /* Ajustar a largura da sidebar */
-    background-color: #4CAF50;
-    padding: 15px; /* Reduzir padding */
-    color: white;
+.aba-lateral {
+  width: 18%;
+  background-color: white;
+  padding: 15px;
+  color: black;
 }
 
-.sidebar .user-info {
+.aba-lateral .user-info {
+  text-align: center;
+}
+
+.aba-lateral img {
+  width: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.aba-lateral h2 {
+  font-size: 16px; /* Reduzir tamanho da fonte */
+  margin-bottom: 5px; /* Menor espaço entre nome e imagem */
+}
+
+.desconectar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 14px;
+}
+.topo-lateral {
+    background-color: #e0e0e0; /* Fundo cinza claro */
+    padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
 }
-
-.sidebar img {
-    width: 60px;
+.topo-lateral img {
+    width: 80px;
     border-radius: 50%;
     margin-bottom: 10px;
-}
-
-.sidebar h2 {
-    font-size: 16px; /* Reduzir tamanho da fonte */
-    margin-bottom: 5px; /* Menor espaço entre nome e imagem */
-}
-
-.logout {
-    display: block;
-    color: white;
-    margin-top: 10px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.menu {
-    margin-top: 30px;
-}
-
+  }
+  .topo-lateral h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 .menu ul {
-    list-style: none;
-    padding-left: 0; /* Remover padding lateral */
+  list-style: none;
+  padding-left: 0;
 }
-
 
 .menu li {
-    margin-bottom: 15px; /* Menor espaço entre os itens */
+  margin-bottom: 20px;
 }
 
-.menu a {
-    text-decoration: none;
-    font-size: 14px; /* Reduzir o tamanho da fonte */
-    color: white;
-    background-color: #388E3C;
-    padding: 8px; /* Reduzir padding do botão */
-    border-radius: 5px;
-    display: block;
-    text-align: center;
-    border: none;
+.menu button {
+  background-color: #60a429;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-.menu a:hover {
-    background-color: #2e7d32;
+.menu button:hover {
+  background-color: #000;
 }
 
 .content {
-    width: 82%; /* Ajustar largura do conteúdo */
-    padding: 30px; /* Diminuir padding */
-    background-color: #8BC34A;
+  width: 82%; /* Ajustar largura do conteúdo */
+  padding: 30px; /* Diminuir padding */
+  background-color: #60a429;
 }
 
 .content h1 {
-    margin-bottom: 15px; /* Ajustar margem */
-    text-align: center;
-    color: white;
-    font-size: 24px; /* Ajustar tamanho da fonte */
+  margin-bottom: 15px; /* Ajustar margem */
+  text-align: center;
+  color: white;
+  font-size: 24px; /* Ajustar tamanho da fonte */
 }
 
 .event-list {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    margin-top: 20px; /* Adicionar margem entre o título e a tabela */
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-top: 20px; /* Adicionar margem entre o título e a tabela */
 }
 
-.event-list th, .event-list td {
-    padding: 12px; /* Ajuste de padding */
-    text-align: left;
-    border: 1px solid #ddd;
+.event-list th,
+.event-list td {
+  padding: 12px; /* Ajuste de padding */
+  text-align: left;
+  border: 1px solid #ddd;
 }
-
 
 .event-list th {
-    background-color: #4CAF50;
-    color: white;
+  background-color: #4caf50;
+  color: white;
 }
 
 .event-list td {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .event-list td:last-child {
-    text-align: center; /* Alinhar o conteúdo ao centro da célula */
-    display: flex;
-    justify-content: center; /* Centraliza os ícones horizontalmente */
-    align-items: center; /* Centraliza os ícones verticalmente */
-    gap: 10px; /* Espaçamento entre os ícones */
-    height: 100%; /* Garante que o flexbox ocupe toda a altura da célula */
+  text-align: center; /* Alinhar o conteúdo ao centro da célula */
+  display: flex;
+  justify-content: center; /* Centraliza os ícones horizontalmente */
+  align-items: center; /* Centraliza os ícones verticalmente */
+  gap: 10px; /* Espaçamento entre os ícones */
+  height: 100%; /* Garante que o flexbox ocupe toda a altura da célula */
 }
 .event-list .action-icons {
-    margin-left: 10px; /* Espaçamento entre os ícones */
-    width: 20px; /* Ajustar tamanho dos ícones */
-    height: 20px;
-    cursor: pointer;
+  margin-left: 10px; /* Espaçamento entre os ícones */
+  width: 20px; /* Ajustar tamanho dos ícones */
+  height: 20px;
+  cursor: pointer;
 }
 
 .event-list .edit-icon {
-    color: #FFC107;
+  color: #ffc107;
 }
 
 .event-list .delete-icon {
-    color: #F44336;
+  color: #f44336;
 }
 .action-icons {
-    width: 24px; /* Ajuste o tamanho do ícone */
-    height: 24px;
-    cursor: pointer;
+  width: 24px; /* Ajuste o tamanho do ícone */
+  height: 24px;
+  cursor: pointer;
 }
 
 .edit-icon {
-    margin-right: 10px; /* Espaçamento entre os ícones */
+  margin-right: 10px; /* Espaçamento entre os ícones */
 }
