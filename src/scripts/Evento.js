@@ -1,35 +1,4 @@
-document.getElementById("desconectar").addEventListener("click", function () {
-  localStorage.removeItem("usuario");
-
-  window.location.href = "../usuario/Login.html";
-});
-
-document
-  .getElementById("btn-listarEvento")
-  .addEventListener(
-    "click",
-    () => (window.location.href = "../evento/Evento.html")
-  );
-
-document
-  .getElementById("btn-creditos")
-  .addEventListener(
-    "click",
-    () => (window.location.href = "../creditos/Creditos.html")
-  );
-
-document
-  .getElementById("btn-feedback")
-  .addEventListener(
-    "click",
-    () => (window.location.href = "../feedbacks/Feedbacks.html")
-  );
-
 document.addEventListener("DOMContentLoaded", () => {
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-  const usuarioComponente = document.getElementById("nome-usuario");
-  usuarioComponente.innerText = usuarioLogado?.nome;
-
   const eventBody = document.getElementById("event-body");
 
   const eventosLocal = JSON.parse(localStorage.getItem("eventos")) || [];

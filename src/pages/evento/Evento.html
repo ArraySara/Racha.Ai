@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Eventos - Racha.Aí</title>
     <link rel="stylesheet" href="../../styles/Evento.css" />
+    <link rel="stylesheet" href="../../styles/abaLateral.css" />
   </head>
   <body>
     <div class="container">
@@ -12,9 +13,9 @@
         <div class="topo-lateral">
           <div class="user-info">
             <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
-            <div>
+            <div style="margin-left: 10px">
               <h2 id="nome-usuario"></h2>
-              <button type="button" id="desconectar">
+              <button type="button" id="btn-desconectar">
                 <img
                   class="icone-desconectar"
                   src="../../assets/sair.png"
@@ -41,8 +42,7 @@
           </ul>
         </nav>
       </aside>
-
-      <main class="content">
+      <main class="conteudo-principal">
         <h1>Lista de eventos</h1>
         <table class="event-list">
           <thead>
@@ -61,5 +61,6 @@
     </div>
 
     <script src="../../scripts/Evento.js"></script>
+    <script src="../../scripts/base.js"></script>
   </body>
 </html>
