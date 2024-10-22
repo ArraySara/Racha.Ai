@@ -115,6 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
         removerEvento(event.estabelecimento)
       );
 
+      const editIcon = row.querySelector(".edit-icon");
+      editIcon.addEventListener("click", () =>
+       window.location.href=`../comanda/Comanda.html?estabelecimento=${event.estabelecimento}`
+      );
+
       eventBody.appendChild(row);
     });
   };
