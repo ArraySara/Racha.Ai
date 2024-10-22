@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Eventos - Racha.Aí</title>
-    <link rel="stylesheet" href="../../styles/Evento.css" />
+    <link rel="stylesheet" href="../../styles/evento.css" />
     <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
@@ -65,11 +65,37 @@
 
             <label for="endereco">Endereço:</label>
             <input type="text" id="endereco" name="endereco" required />
-
-            <label for="nomePagante">Nome do pagante:</label>
-            <input type="text" id="nomePagante" name="nomePagante" />
-            <button type="button" id="btn-adicionarPagante">Adicionar</button>
-            <div id="listaPagantes"></div>
+            <div style="display: flex; flex: 1">
+              <div style="display: flex; flex-direction: column; flex: 9">
+                <label for="nomePagante">Nome do pagante:</label>
+                <input type="text" id="nomePagante" name="nomePagante" />
+              </div>
+              <button
+                type="button"
+                style="
+                  display: flex;
+                  flex: 3;
+                  margin-left: 10px;
+                  justify-content: center;
+                  align-items: center;
+                "
+                id="btn-adicionarPagante"
+              >
+                Adicionar
+              </button>
+            </div>
+            <div
+              id="listaPagantes"
+              style="
+                padding: 5px;
+                height: 100px;
+                overflow: auto;
+                margin-top: 10px;
+                border-width: 1px;
+                border-color: black;
+                border-style: solid;
+              "
+            ></div>
 
             <button type="submit" id="btn-criarEvento">Salvar</button>
           </form>
@@ -93,7 +119,7 @@
       </main>
     </div>
 
-    <script src="../../scripts/Evento.js"></script>
+    <script src="../../scripts/evento.js"></script>
     <script src="../../scripts/base.js"></script>
   </body>
 </html>

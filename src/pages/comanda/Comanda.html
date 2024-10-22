@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comanda Organizada</title>
-    <link rel="stylesheet" href="../../styles/Comanda.css" />
+    <link rel="stylesheet" href="../../styles/comanda.css" />
     <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
@@ -12,6 +12,9 @@
       <div class="container-fab">
         <button id="botao-fab">+</button>
         <div id="opcoes-fab" style="display: none">
+          <button class="opcao-fab" id="btn-abrirModalCriarProduto">
+            Adicionar produto
+          </button>
           <button class="opcao-fab" id="btn-abrirModalEditarEvento">
             Editar evento
           </button>
@@ -48,12 +51,11 @@
         </nav>
       </aside>
       <main class="conteudo-principal">
-        <h1>Comanda organizada</h1>
-        <div class="pagantes">
-          <div class="pagante">Pagante: Lia - R$30,41</div>
-          <div class="pagante">Pagante: Adrielly - R$65,02</div>
-          <div class="pagante">Pagante: Sara - R$265,14</div>
-        </div>
+        <h1 id="nome-evento"></h1>
+        <div
+          class="pagantes"
+          style="display: flex; flex-direction: column"
+        ></div>
       </main>
     </div>
     <!-- Modal para editar evento -->
@@ -146,7 +148,7 @@
       </div>
     </div>
 
-    <script src="../../scripts/Comanda.js"></script>
+    <script src="../../scripts/comanda.js"></script>
     <script src="../../scripts/base.js"></script>
   </body>
 </html>
