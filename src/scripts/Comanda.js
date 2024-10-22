@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const nomeEstabelecimento = urlParams?.get("estabelecimento");
 
-  const listaEventos = await JSON.parse(localStorage.getItem("eventos") || '[]');
+  const listaEventos = await JSON.parse(
+    localStorage.getItem("eventos") || "[]"
+  );
   const evento = listaEventos?.find(
     (item) => item?.estabelecimento === nomeEstabelecimento
   );
@@ -25,16 +27,57 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nomeEventoComponente = document.getElementById("nome-evento");
   nomeEventoComponente.innerText = nomeEstabelecimento || "Comanda do evento";
 
-  const divPagantes = document.getElementsByClassName("pagantes")[0];
+  const estabelecimentoComponente = document.getElementById(
+    "campo-estabelecimento"
+  );
+  estabelecimentoComponente.value = nomeEstabelecimento;
+
+  const dataeventoComponente = document.getElementById("campo-dataEvento");
+  dataeventoComponente.value = evento.dataEvento;
+
+  const enderecoComponente = document.getElementById("campo-endereco");
+  enderecoComponente.value = evento?.endereco;
+
+  const divPagantesTela = document.getElementById("lista-pagantes-com-preco");
   preencherPagantes = () => {
     evento?.pagantes.forEach((pagante) => {
       const linha = document.createElement("span");
       linha.className = "pagante";
       linha.innerText = `Pagante: ${pagante} - R$ 0,00`;
 
-      divPagantes.appendChild(linha);
+      divPagantesTela.appendChild(linha);
     });
   };
 
   preencherPagantes();
+
+  const divPagantesEdicao = document.getElementById("lista-pagantes-edicao");
+  preencherPagantesEdicao = () => {
+    divPagantesEdicao.innerHTML = "";
+    evento?.pagantes.forEach((pagante, index) => {
+      const div = document.createElement("div");
+      div.style.display = "flex";
+      div.style.alignItems = "center";
+      div.style.marginBottom = "10px";
+      div.style.borderBottomWidth = "2px";
+      div.style.borderBottomStyle = "dashed";
+      div.style.borderBottomColor = "#000000";
+
+      const btnExcluir = document.createElement("span");
+      btnExcluir.textContent = "🗑️";
+      btnExcluir.style.cursor = "pointer";
+      btnExcluir.style.marginRight = "10px";
+      btnExcluir.style.marginBottom = "3px";
+      btnExcluir.onclick = () => {
+        evento?.pagantes.splice(index, 1);
+        preencherPagantesEdicao();
+      };
+
+      div.appendChild(btnExcluir);
+      div.appendChild(document.createTextNode(pagante));
+      divPagantesEdicao.appendChild(div);
+    });
+  };
+
+  preencherPagantesEdicao();
 });

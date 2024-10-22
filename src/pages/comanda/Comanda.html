@@ -53,6 +53,7 @@
       <main class="conteudo-principal">
         <h1 id="nome-evento"></h1>
         <div
+          id="lista-pagantes-com-preco"
           class="pagantes"
           style="display: flex; flex-direction: column"
         ></div>
@@ -64,39 +65,64 @@
         <span class="close">&times;</span>
         <h2>Editar evento</h2>
         <form id="formEditarEvento">
-          <label for="editarEstabelecimento">Estabelecimento:</label>
+          <label for="campo-estabelecimento">Estabelecimento:</label>
           <input
             type="text"
-            id="editarEstabelecimento"
-            name="editarEstabelecimento"
-            value="88 bier"
+            id="campo-estabelecimento"
+            name="campo-estabelecimento"
+            value
             required
           />
 
-          <label for="editarDataEvento">Data do evento:</label>
+          <label for="campo-dataEvento">Data do evento:</label>
           <input
             type="date"
-            id="editarDataEvento"
-            name="editarDataEvento"
-            value="2024-04-10"
+            id="campo-dataEvento"
+            name="campo-dataEvento"
+            value
             required
           />
 
-          <label for="editarEndereco">Endereço:</label>
+          <label for="campo-endereco">Endereço:</label>
           <input
             type="text"
-            id="editarEndereco"
-            name="editarEndereco"
-            value="R. Nunes Valente, 1355 - Aldeota"
+            id="campo-endereco"
+            name="campo-endereco"
+            value
             required
           />
 
-          <label for="editarNomePagante">Nome do pagante:</label>
-          <ul>
-            <li>Adrielly</li>
-            <li>Lia</li>
-            <li>Sara</li>
-          </ul>
+          <div style="display: flex; flex: 1">
+            <div style="display: flex; flex-direction: column; flex: 9">
+              <label for="nomePagante">Nome do pagante:</label>
+              <input type="text" id="nomePagante" name="nomePagante" />
+            </div>
+            <button
+              type="button"
+              style="
+                display: flex;
+                flex: 3;
+                margin-left: 10px;
+                justify-content: center;
+                align-items: center;
+              "
+              id="btn-adicionarPagante"
+            >
+              Adicionar
+            </button>
+          </div>
+          <div
+            id="lista-pagantes-edicao"
+            style="
+              padding: 5px;
+              height: 100px;
+              overflow: auto;
+              margin-top: 10px;
+              border-width: 1px;
+              border-color: black;
+              border-style: solid;
+            "
+          ></div>
 
           <button type="submit" id="btnSalvarEdicaoEvento">Salvar</button>
         </form>
