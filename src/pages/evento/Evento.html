@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Eventos - Racha.Aí</title>
     <link rel="stylesheet" href="../../styles/Evento.css" />
-    <link rel="stylesheet" href="../../styles/abaLateral.css" />
+    <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
     <div class="container">
+      <div class="container-fab">
+        <button id="botao-fab">+</button>
+        <div id="opcoes-fab" style="display: none">
+          <button class="opcao-fab" id="btn-abrirModalCriarEvento">
+            Criar evento
+          </button>
+        </div>
+      </div>
       <aside class="aba-lateral">
         <div class="topo-lateral">
           <div class="user-info">
@@ -31,9 +39,6 @@
               <button id="btn-listarEvento">Listar eventos</button>
             </li>
             <li>
-              <button id="btn-criarEvento">Criar evento</button>
-            </li>
-            <li>
               <button id="btn-creditos">Créditos</button>
             </li>
             <li>
@@ -42,6 +47,34 @@
           </ul>
         </nav>
       </aside>
+      <div id="modalCriarEvento" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Criar novo evento</h2>
+          <form id="formCriarEvento">
+            <label for="estabelecimento">Estabelecimento:</label>
+            <input
+              type="text"
+              id="estabelecimento"
+              name="estabelecimento"
+              required
+            />
+
+            <label for="dataEvento">Data do evento:</label>
+            <input type="date" id="dataEvento" name="dataEvento" required />
+
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" required />
+
+            <label for="nomePagante">Nome do pagante:</label>
+            <input type="text" id="nomePagante" name="nomePagante" />
+            <button type="button" id="btn-adicionarPagante">Adicionar</button>
+            <div id="listaPagantes"></div>
+
+            <button type="submit" id="btn-criarEvento">Salvar</button>
+          </form>
+        </div>
+      </div>
       <main class="conteudo-principal">
         <h1>Lista de eventos</h1>
         <table class="event-list">

@@ -5,29 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comanda Organizada</title>
     <link rel="stylesheet" href="../../styles/Comanda.css" />
+    <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
     <div class="container">
-      <aside class="sidebar">
-        <div class="user-info">
-          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
-          <h2>Adrielly Menezes</h2>
-          <a href="../evento/Evento.html" class="logout">Desconectar</a>
+      <div class="container-fab">
+        <button id="botao-fab">+</button>
+        <div id="opcoes-fab" style="display: none">
+          <button class="opcao-fab" id="btn-abrirModalEditarEvento">
+            Editar evento
+          </button>
+        </div>
+      </div>
+      <aside class="aba-lateral">
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div style="margin-left: 10px">
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="btn-desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
+            </div>
+          </div>
         </div>
         <nav class="menu">
           <ul>
-            <li><button id="btnEditar">Editar evento</button></li>
-            <li><button id="btnAdicionarProduto">Adicionar produto</button></li>
             <li>
-              <button onclick="window.location.href = '../evento/Evento.html'">
-                Voltar
-              </button>
+              <button id="btn-listarEvento">Listar eventos</button>
+            </li>
+            <li>
+              <button id="btn-creditos">Créditos</button>
+            </li>
+            <li>
+              <button id="btn-feedback">Feedbacks</button>
             </li>
           </ul>
         </nav>
       </aside>
-
-      <main class="content">
+      <main class="conteudo-principal">
         <h1>Comanda organizada</h1>
         <div class="pagantes">
           <div class="pagante">Pagante: Lia - R$30,41</div>
@@ -36,35 +56,6 @@
         </div>
       </main>
     </div>
-
-    <!-- Modal para criar evento -->
-    <div id="modalCriarEvento" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Criar novo evento</h2>
-        <form id="formCriarEvento">
-          <label for="estabelecimento">Estabelecimento:</label>
-          <input
-            type="text"
-            id="estabelecimento"
-            name="estabelecimento"
-            required
-          />
-
-          <label for="dataEvento">Data do evento:</label>
-          <input type="date" id="dataEvento" name="dataEvento" required />
-
-          <label for="endereco">Endereço:</label>
-          <input type="text" id="endereco" name="endereco" required />
-
-          <label for="nomePagante">Nome do pagante:</label>
-          <input type="text" id="nomePagante" name="nomePagante" required />
-
-          <button type="submit" id="btnSalvarEvento">Salvar</button>
-        </form>
-      </div>
-    </div>
-
     <!-- Modal para editar evento -->
     <div id="modalEditarEvento" class="modal">
       <div class="modal-content">
@@ -156,5 +147,6 @@
     </div>
 
     <script src="../../scripts/Comanda.js"></script>
+    <script src="../../scripts/base.js"></script>
   </body>
 </html>
