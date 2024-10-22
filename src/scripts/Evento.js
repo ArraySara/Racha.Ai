@@ -4,6 +4,27 @@ document.getElementById("desconectar").addEventListener("click", function () {
   window.location.href = "../usuario/Login.html";
 });
 
+document
+  .getElementById("btn-listarEvento")
+  .addEventListener(
+    "click",
+    () => (window.location.href = "../evento/Evento.html")
+  );
+
+document
+  .getElementById("btn-creditos")
+  .addEventListener(
+    "click",
+    () => (window.location.href = "../creditos/Creditos.html")
+  );
+
+document
+  .getElementById("btn-feedback")
+  .addEventListener(
+    "click",
+    () => (window.location.href = "../feedbacks/Feedbacks.html")
+  );
+
 document.addEventListener("DOMContentLoaded", () => {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const usuarioComponente = document.getElementById("nome-usuario");

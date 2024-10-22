@@ -9,41 +9,34 @@
   <body>
     <div class="container">
       <aside class="aba-lateral">
-        <div class="topo-lateral"></div>
-        <div class="user-info">
-          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
-          <h2 id="nome-usuario"></h2>
-          <button type="button" id="desconectar">Desconectar</button>
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div>
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
+            </div>
+          </div>
         </div>
         <nav class="menu">
           <ul>
             <li>
-              <button
-                onclick="window.location.href='../../pages/evento/Evento.html'"
-              >
-                Listar eventos
-              </button>
+              <button id="btn-listarEvento">Listar eventos</button>
             </li>
             <li>
-              <button
-                onclick="window.location.href='../../pages/comanda/Comanda.html'"
-              >
-                Criar evento
-              </button>
+              <button id="btn-criarEvento">Criar evento</button>
             </li>
             <li>
-              <button
-                onclick="window.location.href='../../pages/creditos/Creditos.html'"
-              >
-                Créditos
-              </button>
+              <button id="btn-creditos">Créditos</button>
             </li>
             <li>
-              <button
-                onclick="window.location.href='../../pages/feedbacks/Feedbacks.html'"
-              >
-                Feedbacks
-              </button>
+              <button id="btn-feedback">Feedbacks</button>
             </li>
           </ul>
         </nav>

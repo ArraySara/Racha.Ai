@@ -10,10 +10,10 @@ document
     const senhaInformada = document.getElementById("senha").value;
 
     const usuariosSistema = [
-      { nome: "Adrielly", usuario: "adrielly", senha: "123456" },
-      { nome: "Lia", usuario: "lia", senha: "123456" },
-      { nome: "Jamille", usuario: "jamille", senha: "123456" },
-      { nome: "Sara", usuario: "sara", senha: "123456" },
+      { nome: "Adrielly Bizerril", usuario: "adrielly", senha: "123456" },
+      { nome: "Lia Silva", usuario: "lia", senha: "123456" },
+      { nome: "Maria Jamille", usuario: "jamille", senha: "123456" },
+      { nome: "Sara Lourenço", usuario: "sara", senha: "123456" },
     ];
 
     const usuarioLogado = usuariosSistema?.find(

@@ -17,23 +17,7 @@ body {
 .aba-lateral {
   width: 18%;
   background-color: white;
-  padding: 15px;
   color: black;
-}
-
-.aba-lateral .user-info {
-  text-align: center;
-}
-
-.aba-lateral img {
-  width: 60px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.aba-lateral h2 {
-  font-size: 16px; /* Reduzir tamanho da fonte */
-  margin-bottom: 5px; /* Menor espaço entre nome e imagem */
 }
 
 .desconectar {
@@ -44,26 +28,46 @@ body {
   font-size: 14px;
 }
 .topo-lateral {
-    background-color: #e0e0e0; /* Fundo cinza claro */
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
+  background-color: #e0e0e0; /* Fundo cinza claro */
+  padding: 10px;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  flex-direction: column;
+  border-end-end-radius: 30px;
+  border-end-start-radius: 30px;
 }
-.topo-lateral img {
-    width: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  .topo-lateral h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+
+.topo-lateral .user-info {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  width: 100px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 20%;
+}
+
+.topo-lateral button {
+  background-color: transparent;
+  border: none;
+  font-size: medium;
+  text-align: center;
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.icone-desconectar {
+  margin-right: 5px;
+  width: 20px;
+}
+
 .menu ul {
   list-style: none;
-  padding-left: 0;
+  padding: 10px;
 }
 
 .menu li {
