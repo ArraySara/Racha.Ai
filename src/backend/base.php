@@ -1,8 +1,8 @@
 <?php
-$servername = "db4free.net";
-$username = "rachaai";
-$password = "Racha@ai";
-$dbname = "teste_rachaai";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "racha_ai";
 
 function getConnection()
 {
