@@ -1,60 +1,62 @@
-// Função para lidar com o login
-function login(event) {
-    event.preventDefault(); // Impede o envio do formulário
+const salvarDadosUsuarioLocalmente = (dados) =>
+  localStorage.setItem("usuario", JSON.stringify(dados));
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+document
+  .querySelector("#loginForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-    // Verifica se os campos estão preenchidos
-    if (!username || !password) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-    }
+    const usuarioInformado = document.getElementById("usuario").value;
+    const senhaInformada = document.getElementById("senha").value;
 
-    // Verifica se já existe uma conta no localStorage
-    const storedUser = localStorage.getItem(username);
+    const usuariosSistema = [
+      { nome: "Adrielly Bizerril", usuario: "adrielly", senha: "123456" },
+      { nome: "Lia Silva", usuario: "lia", senha: "123456" },
+      { nome: "Maria Jamille", usuario: "jamille", senha: "123456" },
+      { nome: "Sara Lourenço", usuario: "sara", senha: "123456" },
+    ];
 
-    if (storedUser) {
-        // Se a conta existe, valida a senha
-        const storedPassword = JSON.parse(storedUser).password;
-        if (storedPassword === password) {
-            alert('Login bem-sucedido! Bem-vindo(a) ' + username);
-        } else {
-            alert('Senha incorreta. Tente novamente.');
-        }
+    const usuarioLogado = usuariosSistema?.find(
+      (item) =>
+        item?.usuario === usuarioInformado && item?.senha === senhaInformada
+    );
+
+    if (usuarioLogado?.nome) {
+      salvarDadosUsuarioLocalmente(usuarioLogado);
+      window.location.href = "../evento/Evento.html";
     } else {
-        alert('Usuário não encontrado. Crie uma conta.');
+      alert("Usuário ou senha incorretos!");
     }
-}
+  });
 
 // Função para criar uma nova conta
 function createAccount() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    // Verifica se os campos estão preenchidos
-    if (!username || !password) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-    }
+  // Verifica se os campos estão preenchidos
+  if (!username || !password) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
 
-    // Verifica se o usuário já existe
-    if (localStorage.getItem(username)) {
-        alert('Usuário já existe. Tente fazer login.');
-    } else {
-        // Armazena a nova conta no localStorage
-        const user = {
-            username: username,
-            password: password
-        };
-        localStorage.setItem(username, JSON.stringify(user));
-        alert('Conta criada com sucesso! Faça login.');
-    }
+  // Verifica se o usuário já existe
+  if (localStorage.getItem(username)) {
+    alert("Usuário já existe. Tente fazer login.");
+  } else {
+    // Armazena a nova conta no localStorage
+    const user = {
+      username: username,
+      password: password,
+    };
+    localStorage.setItem(username, JSON.stringify(user));
+    alert("Conta criada com sucesso! Faça login.");
+  }
 }
 
 // Event listeners
-document.querySelector('form').addEventListener('submit', login);
-document.querySelector('a').addEventListener('click', function(event) {
-    event.preventDefault();
-    createAccount();
+document.querySelector("form").addEventListener("submit", login);
+document.querySelector("a").addEventListener("click", function (event) {
+  event.preventDefault();
+  createAccount();
 });

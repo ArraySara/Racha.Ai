@@ -4,42 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Eventos - Racha.Aí</title>
-    <link rel="stylesheet" href="../../styles/Feedbacks.css" />
-    <link rel="stylesheet" href="../../styles/Evento.css" />
+    <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
     <div class="container">
-      <aside class="sidebar">
-        <div class="user-info">
-          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
-          <h2>Adrielly Menezes</h2>
-          <a href="#" class="logout">Desconectar</a>
+      <aside class="aba-lateral">
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div style="margin-left: 10px">
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="btn-desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
+            </div>
+          </div>
         </div>
         <nav class="menu">
           <ul>
-            <li><a href="../../pages/evento/Evento.html">Listar eventos</a></li>
             <li>
-              <a href="../../pages/comanda/Comanda.html">Criar evento</a></li>
+              <button id="btn-listarEvento">Listar eventos</button>
             </li>
-            <li><a href="../../pages/creditos/Creditos.html">Créditos</a></li>
             <li>
-              <a href="../../pages/feedbacks/Feedbacks.html">Feedbacks</a>
+              <button id="btn-creditos">Créditos</button>
+            </li>
+            <li>
+              <button id="btn-feedback">Feedbacks</button>
             </li>
           </ul>
         </nav>
       </aside>
-
-      <main class="content">
+      <main class="conteudo-principal">
         <h1>Feedbacks</h1>
         <div class="canva">
           <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
           <span>
             <p>
               A sua opinião é fundamental para nós! Estamos sempre em busca de
-              melhorias para o Racha.Aí, e suas ideias podem fazer toda 
-              a diferença. Se você tiver sugestões, encontrou algum problema ou
-              gostaria de compartilhar suas experiências, adoraríamos
-              ouvir de você.
+              melhorias para o Racha.Aí, e suas ideias podem fazer toda a
+              diferença. Se você tiver sugestões, encontrou algum problema ou
+              gostaria de compartilhar suas experiências, adoraríamos ouvir de
+              você.
             </p>
             <br />
             <p>
@@ -57,6 +66,6 @@
       </main>
     </div>
 
-    <script src="../../scripts/Feedbacks.js"></script>
+    <script src="../../scripts/base.js"></script>
   </body>
 </html>

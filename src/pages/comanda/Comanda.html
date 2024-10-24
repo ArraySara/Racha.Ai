@@ -4,107 +4,125 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comanda Organizada</title>
-    <link rel="stylesheet" href="../../styles/Comanda.css" />
+    <link rel="stylesheet" href="../../styles/comanda.css" />
+    <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
     <div class="container">
-      <aside class="sidebar">
-        <div class="user-info">
-          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
-          <h2>Adrielly Menezes</h2>
-          <a href="../evento/Evento.html" class="logout">Desconectar</a>
+      <div class="container-fab">
+        <button id="botao-fab">+</button>
+        <div id="opcoes-fab" style="display: none">
+          <button class="opcao-fab" id="btn-abrirModalCriarProduto">
+            Adicionar produto
+          </button>
+          <button class="opcao-fab" id="btn-abrirModalEditarEvento">
+            Editar evento
+          </button>
+        </div>
+      </div>
+      <aside class="aba-lateral">
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div style="margin-left: 10px">
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="btn-desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
+            </div>
+          </div>
         </div>
         <nav class="menu">
           <ul>
-            <li><button id="btnEditar">Editar evento</button></li>
-            <li><button id="btnCriarEvento">Criar evento</button></li>
-            <li><button id="btnAdicionarProduto">Adicionar produto</button></li>
             <li>
-              <button onclick="window.location.href = '../evento/Evento.html'">
-                Voltar
-              </button>
+              <button id="btn-listarEvento">Listar eventos</button>
+            </li>
+            <li>
+              <button id="btn-creditos">Créditos</button>
+            </li>
+            <li>
+              <button id="btn-feedback">Feedbacks</button>
             </li>
           </ul>
         </nav>
       </aside>
-
-      <main class="content">
-        <h1>Comanda organizada</h1>
-        <div class="pagantes">
-          <div class="pagante">Pagante: Lia - R$30,41</div>
-          <div class="pagante">Pagante: Adrielly - R$65,02</div>
-          <div class="pagante">Pagante: Sara - R$265,14</div>
-        </div>
+      <main class="conteudo-principal">
+        <h1 id="nome-evento"></h1>
+        <div
+          id="lista-pagantes-com-preco"
+          class="pagantes"
+          style="display: flex; flex-direction: column"
+        ></div>
       </main>
     </div>
-
-    <!-- Modal para criar evento -->
-    <div id="modalCriarEvento" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Criar novo evento</h2>
-        <form id="formCriarEvento">
-          <label for="estabelecimento">Estabelecimento:</label>
-          <input
-            type="text"
-            id="estabelecimento"
-            name="estabelecimento"
-            required
-          />
-
-          <label for="dataEvento">Data do evento:</label>
-          <input type="date" id="dataEvento" name="dataEvento" required />
-
-          <label for="endereco">Endereço:</label>
-          <input type="text" id="endereco" name="endereco" required />
-
-          <label for="nomePagante">Nome do pagante:</label>
-          <input type="text" id="nomePagante" name="nomePagante" required />
-
-          <button type="submit" id="btnSalvarEvento">Salvar</button>
-        </form>
-      </div>
-    </div>
-
     <!-- Modal para editar evento -->
     <div id="modalEditarEvento" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Editar evento</h2>
         <form id="formEditarEvento">
-          <label for="editarEstabelecimento">Estabelecimento:</label>
+          <label for="campo-estabelecimento">Estabelecimento:</label>
           <input
             type="text"
-            id="editarEstabelecimento"
-            name="editarEstabelecimento"
-            value="88 bier"
+            id="campo-estabelecimento"
+            name="campo-estabelecimento"
+            value
             required
           />
 
-          <label for="editarDataEvento">Data do evento:</label>
+          <label for="campo-dataEvento">Data do evento:</label>
           <input
             type="date"
-            id="editarDataEvento"
-            name="editarDataEvento"
-            value="2024-04-10"
+            id="campo-dataEvento"
+            name="campo-dataEvento"
+            value
             required
           />
 
-          <label for="editarEndereco">Endereço:</label>
+          <label for="campo-endereco">Endereço:</label>
           <input
             type="text"
-            id="editarEndereco"
-            name="editarEndereco"
-            value="R. Nunes Valente, 1355 - Aldeota"
+            id="campo-endereco"
+            name="campo-endereco"
+            value
             required
           />
 
-          <label for="editarNomePagante">Nome do pagante:</label>
-          <ul>
-            <li>Adrielly</li>
-            <li>Lia</li>
-            <li>Sara</li>
-          </ul>
+          <div style="display: flex; flex: 1">
+            <div style="display: flex; flex-direction: column; flex: 9">
+              <label for="nomePagante">Nome do pagante:</label>
+              <input type="text" id="nomePagante" name="nomePagante" />
+            </div>
+            <button
+              type="button"
+              style="
+                display: flex;
+                flex: 3;
+                margin-left: 10px;
+                justify-content: center;
+                align-items: center;
+              "
+              id="btn-adicionarPagante"
+            >
+              Adicionar
+            </button>
+          </div>
+          <div
+            id="lista-pagantes-edicao"
+            style="
+              padding: 5px;
+              height: 100px;
+              overflow: auto;
+              margin-top: 10px;
+              border-width: 1px;
+              border-color: black;
+              border-style: solid;
+            "
+          ></div>
 
           <button type="submit" id="btnSalvarEdicaoEvento">Salvar</button>
         </form>
@@ -156,160 +174,7 @@
       </div>
     </div>
 
-    <script src="../../scripts/Comanda.js"></script>
+    <script src="../../scripts/comanda.js"></script>
+    <script src="../../scripts/base.js"></script>
   </body>
-</html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Taxa de Serviço</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-        }
-        input {
-            margin-bottom: 10px;
-            padding: 5px;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Calculadora de Taxa de Serviço (10%)</h1>
-
-    <label for="comanda">Valor da Comanda:</label>
-    <input type="number" id="comanda" placeholder="Digite o valor da comanda">
-    <br>
-    <button onclick="calcularTotal()">Calcular Total com 10%</button>
-
-    <h2 id="resultado"></h2>
-
-    <script>
-        function calcularTotal() {
-            // Pega o valor da comanda
-            var comanda = parseFloat(document.getElementById("comanda").value);
-
-            // Calcula os 10% e o total
-            var taxaServico = comanda * 0.10;
-            var totalComTaxa = comanda + taxaServico;
-
-            // Exibe o resultado
-            document.getElementById("resultado").innerHTML = "Total com 10%: R$ " + totalComTaxa.toFixed(2);
-        }
-    </script>
-
-</body>
-</html>
-
-<!-- Botão para editar produto -->
-<button onclick="editarProduto(produtoId)">Editar</button>
-
-<script>
-function editarProduto(produtoId) {
-    // Exibir modal de edição (ou navegue para uma página de edição)
-    const novoNome = prompt("Digite o novo nome do produto:");
-    const novaQuantidade = prompt("Digite a nova quantidade:");
-
-    // Enviar os dados editados para o backend
-    fetch(`/comanda/editar/${produtoId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            nome: novoNome,
-            quantidade: novaQuantidade
-        })
-    }).then(response => {
-        if (response.ok) {
-            // Atualiza a interface com os novos dados
-            document.getElementById(`nome-produto-${produtoId}`).textContent = novoNome;
-            document.getElementById(`quantidade-produto-${produtoId}`).textContent = novaQuantidade;
-        }
-    });
-}
-</script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Produtos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #product-list {
-            list-style: none;
-            padding: 0;
-        }
-        #product-list li {
-            padding: 8px;
-            margin-bottom: 5px;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        button {
-            padding: 5px 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: darkred;
-        }
-    </style>
-</head>
-<body>
-
-<h1>Lista de Produtos</h1>
-
-<!-- Formulário para adicionar produtos -->
-<input type="text" id="product-name" placeholder="Nome do produto">
-<button onclick="addProduct()">Adicionar Produto</button>
-
-<!-- Lista de produtos -->
-<ul id="product-list"></ul>
-
-<script>
-    // Função para adicionar produtos
-    function addProduct() {
-        const productName = document.getElementById("product-name").value;
-        if (productName === "") {
-            alert("O nome do produto não pode estar vazio!");
-            return;
-        }
-
-        const productList = document.getElementById("product-list");
-
-        // Cria um item de lista (li) para o novo produto
-        const listItem = document.createElement("li");
-        listItem.textContent = productName;
-
-        // Cria um botão de excluir
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Excluir";
-        deleteButton.onclick = function () {
-            productList.removeChild(listItem);
-        };
-
-        // Adiciona o botão de excluir ao item de lista
-        listItem.appendChild(deleteButton);
-
-        // Adiciona o item de lista à lista de produtos
-        productList.appendChild(listItem);
-
-        // Limpa o campo de entrada de texto
-        document.getElementById("product-name").value = "";
-    }
-</script>
-
-</body>
 </html>
