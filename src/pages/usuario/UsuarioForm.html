@@ -1,57 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro - Racha.Aí</title>
-    <link rel="stylesheet" href="../../styles/cadastro.css">
-    <script src="../../scripts/cadastro.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="../../styles/cadastro.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="form-box">
-            <img src="../../assets/logo.png" alt="Logo Racha.Aí" class="logo">
-            <form id="cadastroForm">
-                <div class="input-group">
-                    <label for="nomeCompleto">Nome Completo:</label>
-                    <input type="text" id="nomeCompleto" name="nomeCompleto" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="dataNascimento">Data de Nascimento:</label>
-                    <input type="date" id="dataNascimento" name="dataNascimento" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="nomeUsuario">Nome de Usuário:</label>
-                    <input type="text" id="nomeUsuario" name="nomeUsuario" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="email">E-mail:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="senha">Senha:</label>
-                    <input type="password" id="senha" name="senha" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="confirmaSenha">Confirmar Senha:</label>
-                    <input type="password" id="confirmaSenha" name="confirmaSenha" required>
-                </div>
-
-                <button type="submit" class="btn">Criar conta</button>
-            </form>
-
-            <div class="link-box">
-                <span>ou</span>
-                <a href="./Login.html">Acesse sua conta</a>
-            </div>
+      <div class="form-box">
+        <img src="../../assets/logo.png" alt="Logo Racha.Aí" class="logo" />
+        <form id="cadastroForm">
+          <div class="input-group">
+            <label for="nomeCompleto">Nome Completo:</label>
+            <input type="text" id="nomeCompleto" name="nomeCompleto" required />
+          </div>
+          <div class="input-group">
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input
+              type="date"
+              id="dataNascimento"
+              name="dataNascimento"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="input-group">
+            <label for="nomeUsuario">Nome de Usuário:</label>
+            <input type="text" id="nomeUsuario" name="nomeUsuario" required />
+          </div>
+          <div class="input-group">
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required />
+          </div>
+          <button type="button" class="btn" id="btn-criar-usuario">
+            Criar conta
+          </button>
+        </form>
+        <div class="link-box">
+          <span>ou</span>
+          <a href="./Login.html">Acesse sua conta</a>
         </div>
+      </div>
     </div>
-    
-    <script src="scripts/cadastro.js"></script>
-</body>
+    <script src="../../scripts/usuario.js"></script>
+  </body>
 </html>

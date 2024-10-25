@@ -59,122 +59,34 @@
         ></div>
       </main>
     </div>
-    <!-- Modal para editar evento -->
-    <div id="modalEditarEvento" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Editar evento</h2>
-        <form id="formEditarEvento">
-          <label for="campo-estabelecimento">Estabelecimento:</label>
-          <input
-            type="text"
-            id="campo-estabelecimento"
-            name="campo-estabelecimento"
-            value
-            required
-          />
-
-          <label for="campo-dataEvento">Data do evento:</label>
-          <input
-            type="date"
-            id="campo-dataEvento"
-            name="campo-dataEvento"
-            value
-            required
-          />
-
-          <label for="campo-endereco">Endereço:</label>
-          <input
-            type="text"
-            id="campo-endereco"
-            name="campo-endereco"
-            value
-            required
-          />
-
-          <div style="display: flex; flex: 1">
-            <div style="display: flex; flex-direction: column; flex: 9">
-              <label for="nomePagante">Nome do pagante:</label>
-              <input type="text" id="nomePagante" name="nomePagante" />
-            </div>
-            <button
-              type="button"
-              style="
-                display: flex;
-                flex: 3;
-                margin-left: 10px;
-                justify-content: center;
-                align-items: center;
-              "
-              id="btn-adicionarPagante"
-            >
-              Adicionar
-            </button>
-          </div>
-          <div
-            id="lista-pagantes-edicao"
-            style="
-              padding: 5px;
-              height: 100px;
-              overflow: auto;
-              margin-top: 10px;
-              border-width: 1px;
-              border-color: black;
-              border-style: solid;
-            "
-          ></div>
-
-          <button type="submit" id="btnSalvarEdicaoEvento">Salvar</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Modal para adicionar produto -->
-    <div id="modalAdicionarProduto" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Adicionar produto</h2>
-        <form id="formAdicionarProduto">
-          <label for="nomeProduto">Nome:</label>
-          <input
-            type="text"
-            id="nomeProduto"
-            name="nomeProduto"
-            placeholder="Digite o nome do produto"
-            required
-          />
-
-          <label for="precoProduto">Preço:</label>
-          <input
-            type="number"
-            id="precoProduto"
-            name="precoProduto"
-            placeholder="Digite o preço"
-            required
-          />
-
-          <label for="quantidadeProduto">Quantidade:</label>
-          <input
-            type="number"
-            id="quantidadeProduto"
-            name="quantidadeProduto"
-            placeholder="Digite a quantidade"
-            required
-          />
-
-          <label for="paganteProduto">Pagante:</label>
-          <select id="paganteProduto" name="paganteProduto" required>
-            <option value="Adrielly">Adrielly</option>
-            <option value="Lia">Lia</option>
-            <option value="Sara">Sara</option>
-          </select>
-
-          <button type="submit" id="btnSalvarProduto">Salvar</button>
-        </form>
-      </div>
-    </div>
 
     <script src="../../scripts/comanda.js"></script>
     <script src="../../scripts/base.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventoId = urlParams.get("eventoId");
+
+        if (eventoId) {
+          fetch(`../../backend/getEvento.php?eventoId=${eventoId}`)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.erro) {
+                alert("Erro ao carregar evento: " + data.erro);
+                window.location.href = "../evento/Evento.html";
+              } else {
+                document.getElementById("nome-evento").textContent = data.nome;
+                // Preencher outros campos do evento, se necessário
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao buscar evento:", error);
+            });
+        } else {
+          alert("ID do evento não fornecido.");
+          window.location.href = "../evento/Evento.html";
+        }
+      });
+    </script>
   </body>
 </html>
