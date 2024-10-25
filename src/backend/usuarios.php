@@ -1,8 +1,6 @@
 <?php
 include 'base.php';
-
 header('Content-Type: application/json');
-
 $conn = getConnection();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
@@ -17,10 +15,10 @@ switch ($metodo) {
 
     case 'POST':
         if (isset($_POST['acao']) && $_POST['acao'] === 'login') {
-            loginUsuario($conn, $_POST['email'], $_POST['senha']);
+            loginUsuario($conn, $_POST['usuario'], $_POST['senha']);
         } else {
             $id = $_POST['id'] ?? null;
-            salvarUsuario($conn, $id, $_POST['nome'], $_POST['email'], $_POST['senha']);
+            salvarUsuario($conn, $id, $_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['usuario'], $_POST['data_nascimento']);
         }
         break;
 
@@ -65,35 +63,43 @@ function getUsuarioPorId($conn, $id)
     }
 }
 
-function salvarUsuario($conn, $id, $nome, $email, $senha)
+function salvarUsuario($conn, $id, $nome, $email, $senha, $usuario, $data_nascimento)
 {
     if ($id) {
         if (!empty($senha)) {
             $senhaCriptografada = password_hash($senha, PASSWORD_BCRYPT);
-            $query = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
+            $query = "UPDATE usuario SET nome = ?, email = ?, senha = ?, usuario = ?, data_nascimento = ? WHERE id = ?";
             $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, 'sssi', $nome, $email, $senhaCriptografada, $id);
+            mysqli_stmt_bind_param($stmt, 'sssssi', $nome, $email, $senhaCriptografada, $usuario, $data_nascimento, $id);
         } else {
-            $query = "UPDATE usuario SET nome = ?, email = ? WHERE id = ?";
+            $query = "UPDATE usuario SET nome = ?, email = ?, usuario = ?, data_nascimento = ? WHERE id = ?";
             $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, 'ssi', $nome, $email, $id);
+            mysqli_stmt_bind_param($stmt, 'ssssi', $nome, $email, $usuario, $data_nascimento, $id);
         }
 
         if (mysqli_stmt_execute($stmt)) {
             echo json_encode(['mensagem' => 'Usuário atualizado com sucesso']);
         } else {
-            echo json_encode(['mensagem' => 'Erro ao atualizar usuário']);
+            if (mysqli_errno($conn) == 1062) {
+                echo json_encode(['mensagem' => 'Erro: o nome de usuário já está em uso.']);
+            } else {
+                echo json_encode(['mensagem' => 'Erro ao atualizar usuário']);
+            }
         }
     } else {
         $senhaCriptografada = password_hash($senha, PASSWORD_BCRYPT);
-        $query = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
+        $query = "INSERT INTO usuario (nome, email, senha, usuario, data_nascimento) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 'sss', $nome, $email, $senhaCriptografada);
+        mysqli_stmt_bind_param($stmt, 'sssss', $nome, $email, $senhaCriptografada, $usuario, $data_nascimento);
 
         if (mysqli_stmt_execute($stmt)) {
             echo json_encode(['mensagem' => 'Usuário criado com sucesso']);
         } else {
-            echo json_encode(['mensagem' => 'Erro ao criar usuário']);
+            if (mysqli_errno($conn) == 1062) {
+                echo json_encode(['mensagem' => 'Erro: o nome de usuário já está em uso.']);
+            } else {
+                echo json_encode(['mensagem' => 'Erro ao criar usuário']);
+            }
         }
     }
 }
@@ -111,22 +117,23 @@ function removerUsuario($conn, $id)
     }
 }
 
-function loginUsuario($conn, $email, $senha)
+function loginUsuario($conn, $usuario, $senha)
 {
-    $query = "SELECT * FROM usuario WHERE email = '$email'";
-    $resultado = mysqli_query($conn, $query);
+    $query = "SELECT * FROM usuario WHERE usuario = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 's', $usuario);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $usuario = mysqli_fetch_assoc($resultado);
-
         $loginValido = password_verify($senha, $usuario['senha']) || $senha === $usuario['senha'];
 
         if ($loginValido) {
             echo json_encode(['mensagem' => 'Login bem-sucedido', 'usuario' => $usuario]);
-            return;
+        } else {
+            echo json_encode(['mensagem' => 'Senha incorreta']);
         }
-
-        echo json_encode(['mensagem' => 'Senha incorreta']);
     } else {
         echo json_encode(['mensagem' => 'Usuário não encontrado']);
     }
