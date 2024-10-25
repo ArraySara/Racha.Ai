@@ -35,16 +35,4 @@ if ($metodo == 'DELETE') {
     echo json_encode(['mensagem' => 'Evento deletado com sucesso']);
 }
 
-if ($metodo == 'PUT') {
-    parse_str(file_get_contents("php://input"), $data);
-    $id = $data['id'];
-    $nome = $data['nome'];
-    $endereco = $data['endereco'];
-    $data_evento = $data['data_evento'];
-    $query = "UPDATE Evento SET nome = '$nome', endereco = '$endereco', data_evento = '$data_evento' WHERE id = $id";
-    mysqli_query($conn, $query);
-    echo json_encode(['mensagem' => 'Evento atualizado com sucesso']);
-}
-
 mysqli_close($conn);
-?>

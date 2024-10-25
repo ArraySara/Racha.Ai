@@ -1,128 +1,104 @@
-document
-  .getElementById("btn-criarEvento")
-  .addEventListener("click", async (e) => {
-    e.preventDefault();
-    const estabelecimento = document.getElementById("estabelecimento").value;
-    const dataEvento = document.getElementById("dataEvento").value;
-    const endereco = document.getElementById("endereco").value;
+const listarEventos = async () => {
+  try {
+    const response = await fetch("../../backend/eventos.php", {
+      method: "GET",
+    });
 
-    const tudoPreenchido =
-      estabelecimento !== "" &&
-      dataEvento !== "" &&
-      dataEvento?.length > 9 &&
-      endereco !== "";
+    if (!response.ok) throw new Error("Erro ao listar eventos");
 
-    if (!tudoPreenchido) {
-      alert("É necessário informar todos os campos!");
-      return null;
-    }
-
-    if (pagantes?.length <= 0) {
-      alert("Você precisa adicionar pelo menos uma pessoa para o evento!");
-      return null;
-    }
-
-    const dados = { estabelecimento, dataEvento, endereco, pagantes };
-    const eventosCadastrados = await JSON.parse(
-      localStorage.getItem("eventos") || "[]"
-    );
-
-    eventosCadastrados.push(dados);
-
-    localStorage.setItem("eventos", JSON.stringify(eventosCadastrados));
-
-    fecharModal(modalCriarEvento);
-    mudarTela(`../comanda/Comanda.html?estabelecimento=${estabelecimento}`);
-  });
-
-const adicionarPagante = () => {
-  const nomePaganteInput = document.getElementById("nomePagante");
-  const nome = nomePaganteInput.value.trim();
-
-  if (nome) {
-    pagantes.push(nome);
-    nomePaganteInput.value = "";
-    atualizarListaPagantes();
+    const eventos = await response.json();
+    mostrarEventos(eventos);
+  } catch (error) {
+    console.error("Erro ao buscar eventos:", error);
   }
 };
 
-const atualizarListaPagantes = () => {
-  listaPagantes.innerHTML = "";
-  pagantes.forEach((pagante, index) => {
-    const div = document.createElement("div");
-    div.style.display = "flex";
-    div.style.alignItems = "center";
-    div.style.marginBottom = "10px";
-    div.style.borderBottomWidth = "2px";
-    div.style.borderBottomStyle = "dashed";
-    div.style.borderBottomColor = "#000000";
+const mostrarEventos = (eventos) => {
+  const eventBody = document.getElementById("event-body");
+  eventBody.innerHTML = "";
 
-    const btnExcluir = document.createElement("span");
-    btnExcluir.textContent = "🗑️";
-    btnExcluir.style.cursor = "pointer";
-    btnExcluir.style.marginRight = "10px";
-    btnExcluir.style.marginBottom = "3px";
-    btnExcluir.onclick = () => {
-      pagantes.splice(index, 1);
-      atualizarListaPagantes();
-    };
+  eventos.forEach((event) => {
+    const row = document.createElement("tr");
 
-    div.appendChild(btnExcluir);
-    div.appendChild(document.createTextNode(pagante));
-    listaPagantes.appendChild(div);
+    row.innerHTML = `
+      <td>${event.nome}</td>
+      <td>${event.endereco || "N/A"}</td>
+      <td>${new Date(event.data_evento).toLocaleDateString("pt-BR")}</td>
+      <td>
+        <img src="../../assets/pencil.png" alt="Editar" class="action-icons edit-icon">
+        <img src="../../assets/trash.png" alt="Excluir" class="action-icons delete-icon">
+      </td>
+    `;
+
+    const deleteIcon = row.querySelector(".delete-icon");
+    deleteIcon.addEventListener("click", () => removerEvento(event.id));
+
+    const editIcon = row.querySelector(".edit-icon");
+    editIcon.addEventListener(
+      "click",
+      () =>
+        (window.location.href = `../comanda/Comanda.html?estabelecimento=${event.nome}`)
+    );
+
+    eventBody.appendChild(row);
   });
 };
 
-document
-  .getElementById("btn-adicionarPagante")
-  .addEventListener("click", adicionarPagante);
-
-document.addEventListener("DOMContentLoaded", () => {
-  const eventBody = document.getElementById("event-body");
-  const eventosLocal = JSON.parse(localStorage.getItem("eventos")) || [];
-
-  const removerEvento = (nomeEstabelecimento) => {
-    const listaEventos = JSON.parse(localStorage.getItem("eventos")) || [];
-    const novaListaEventos = listaEventos.filter(
-      (item) => item.estabelecimento !== nomeEstabelecimento
-    );
-
-    localStorage.setItem("eventos", JSON.stringify(novaListaEventos));
-
-    window.location.reload();
-  };
-
-  const mostrarEventos = () => {
-    eventosLocal.forEach((event) => {
-      const row = document.createElement("tr");
-
-      row.innerHTML = `
-          <td>${event.estabelecimento}</td>
-          <td>${event.endereco}</td>
-          <td>${new Date(event.dataEvento).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })}</td>
-          <td>
-            <img src="../../assets/pencil.png" alt="Editar" class="action-icons edit-icon">
-            <img src="../../assets/trash.png" alt="Excluir" class="action-icons delete-icon">
-          </td>
-        `;
-
-      const deleteIcon = row.querySelector(".delete-icon");
-      deleteIcon.addEventListener("click", () =>
-        removerEvento(event.estabelecimento)
-      );
-
-      const editIcon = row.querySelector(".edit-icon");
-      editIcon.addEventListener("click", () =>
-       window.location.href=`../comanda/Comanda.html?estabelecimento=${event.estabelecimento}`
-      );
-
-      eventBody.appendChild(row);
+const criarEvento = async (dados) => {
+  try {
+    const response = await fetch("../../backend/eventos.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        nome: dados.estabelecimento,
+        data_evento: dados.dataEvento,
+        endereco: dados.endereco,
+      }),
     });
-  };
 
-  mostrarEventos();
+    if (!response.ok) throw new Error("Erro ao criar evento");
+
+    const resultado = await response.json();
+    alert(resultado.mensagem);
+    listarEventos();
+  } catch (error) {
+    console.error("Erro ao criar evento:", error);
+    alert("Erro ao criar evento. Tente novamente.");
+  }
+};
+
+document.getElementById("btn-criarEvento").addEventListener("click", (e) => {
+  e.preventDefault();
+  const estabelecimento = document.getElementById("estabelecimento").value;
+  const dataEvento = document.getElementById("dataEvento").value;
+  const endereco = document.getElementById("endereco").value;
+
+  if (!estabelecimento || !dataEvento || !endereco) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  const dados = { estabelecimento, dataEvento, endereco };
+  criarEvento(dados);
 });
+
+document.addEventListener("DOMContentLoaded", listarEventos);
+
+const removerEvento = async (id) => {
+  try {
+    const response = await fetch("../../backend/eventos.php", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ id }),
+    });
+
+    if (!response.ok) throw new Error("Erro ao remover evento");
+
+    const resultado = await response.json();
+    alert(resultado.mensagem);
+    listarEventos();
+  } catch (error) {
+    console.error("Erro ao remover evento:", error);
+    alert("Erro ao remover evento. Tente novamente.");
+  }
+};
