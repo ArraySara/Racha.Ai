@@ -1,8 +1,15 @@
 const listarEventos = async () => {
   try {
-    const response = await fetch("../../backend/eventos.php", {
-      method: "GET",
-    });
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario || !usuario.id) {
+      console.error("Usuário não encontrado ou ID ausente.");
+      return;
+    }
+
+    const response = await fetch(
+      `../../backend/eventos.php?fk_id_usuario=${usuario.id}`,
+      { method: "GET" }
+    );
 
     if (!response.ok) throw new Error("Erro ao listar eventos");
 
@@ -37,7 +44,7 @@ const mostrarEventos = (eventos) => {
     editIcon.addEventListener(
       "click",
       () =>
-        (window.location.href = `../comanda/Comanda.html?estabelecimento=${event.nome}`)
+        (window.location.href = `../comanda/Comanda.html?eventoId=${event.id}`)
     );
 
     eventBody.appendChild(row);
@@ -46,6 +53,12 @@ const mostrarEventos = (eventos) => {
 
 const criarEvento = async (dados) => {
   try {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario || !usuario.id) {
+      alert("Usuário não está logado.");
+      return;
+    }
+
     const response = await fetch("../../backend/eventos.php", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -53,6 +66,7 @@ const criarEvento = async (dados) => {
         nome: dados.estabelecimento,
         data_evento: dados.dataEvento,
         endereco: dados.endereco,
+        fk_id_usuario: usuario.id,
       }),
     });
 
@@ -60,7 +74,14 @@ const criarEvento = async (dados) => {
 
     const resultado = await response.json();
     alert(resultado.mensagem);
-    listarEventos();
+
+    document.getElementById("modalCriarEvento").style.display = "none";
+
+    if (resultado.eventoId) {
+      window.location.href = `../comanda/Comanda.html?eventoId=${resultado.eventoId}`;
+    } else {
+      listarEventos();
+    }
   } catch (error) {
     console.error("Erro ao criar evento:", error);
     alert("Erro ao criar evento. Tente novamente.");
