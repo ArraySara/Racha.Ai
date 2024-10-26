@@ -8,7 +8,7 @@ const opcoesFab = document.getElementById("opcoes-fab");
 let fabAberto = false;
 let timer;
 
-const pagantes = [];
+let pagantes = [];
 
 const adicionarEventoSeExistir = (id, evento) => {
   const elemento = document.getElementById(id);
@@ -139,3 +139,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const usuarioComponente = document.getElementById("nome-usuario");
   usuarioComponente.innerText = usuarioLogado?.nome;
 });
+
+const atualizarListaPagantes = () => {
+  const listaPagantes = document.getElementById("listaPagantes");
+  listaPagantes.innerHTML = "";
+
+  pagantes.forEach((pagante, index) => {
+    const div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.alignItems = "center";
+    div.style.marginBottom = "10px";
+    div.style.borderBottomWidth = "2px";
+    div.style.borderBottomStyle = "dashed";
+    div.style.borderBottomColor = "#000000";
+
+    const btnRemover = document.createElement("span");
+    btnRemover.textContent = "🗑️";
+    btnRemover.style.cursor = "pointer";
+    btnRemover.style.marginRight = "10px";
+    btnRemover.style.marginBottom = "3px";
+    btnRemover.onclick = () => {
+      pagantes.splice(index, 1);
+      atualizarListaPagantes();
+    };
+
+    div.appendChild(btnRemover);
+    div.appendChild(document.createTextNode(pagante));
+    listaPagantes.appendChild(div);
+  });
+};
+
+const btnAdicionarPagante = document.getElementById("btn-adicionarPagante");
+if (btnAdicionarPagante) {
+  btnAdicionarPagante.addEventListener("click", () => {
+    const nomePagante = document.getElementById("nomePagante").value;
+    if (!nomePagante) {
+      alert("Por favor, insira o nome do pagante!");
+      return;
+    }
+
+    pagantes.push(nomePagante);
+    atualizarListaPagantes();
+    document.getElementById("nomePagante").value = "";
+  });
+}

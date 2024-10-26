@@ -55,7 +55,12 @@ const criarEvento = async (dados) => {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || !usuario.id) {
-      alert("Usuário não está logado.");
+      alert("Usuário não está logado!");
+      return;
+    }
+
+    if (pagantes?.length <= 0) {
+      alert("Lista de pagantes está vazia!");
       return;
     }
 
@@ -71,22 +76,42 @@ const criarEvento = async (dados) => {
       }),
     });
 
-    if (!response.ok) throw new Error("Erro ao criar evento");
+    if (!response.ok) throw new Error("Erro ao criar evento!");
 
     const resultado = await response.json();
-    alert(resultado.mensagem);
 
-    document.getElementById("modalCriarEvento").style.display = "none";
+    const modalCriarEvento = document.getElementById("modalCriarEvento");
+    if (modalCriarEvento) modalCriarEvento.style.display = "none";
 
     if (resultado.eventoId) {
-      window.location.href = `../comanda/Comanda.html?eventoId=${resultado.eventoId}`;
+      await adicionarPagantes(resultado.eventoId);
+      // window.location.href = `../comanda/Comanda.html?eventoId=${resultado.eventoId}`;
       return null;
     }
-
-    listarEventos();
   } catch (error) {
     console.error("Erro ao criar evento:", error);
-    alert("Erro ao criar evento. Tente novamente.");
+    alert("Erro ao criar evento!");
+  }
+};
+
+const adicionarPagantes = async (eventoId) => {
+  try {
+    const response = await fetch("../../backend/pagantesEventos.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        acao: "adicionar",
+        id_evento: eventoId,
+        pagantes: JSON.stringify(pagantes?.map((nome) => ({ nome }))),
+      }),
+    });
+
+    if (!response.ok) throw new Error("Erro ao adicionar pagantes");
+    listarEventos();
+  } catch (error) {
+    console.error("Erro ao adicionar pagantes:", error);
+    await removerTodosPagantesPorEvento(eventoId);
+    await removerEvento(eventoId);
   }
 };
 
@@ -123,5 +148,23 @@ const removerEvento = async (id) => {
   } catch (error) {
     console.error("Erro ao remover evento:", error);
     alert("Erro ao remover evento. Tente novamente.");
+  }
+};
+
+const removerTodosPagantesPorEvento = async (eventoId) => {
+  try {
+    const response = await fetch("../../backend/pagantesEventos.php", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id_evento: eventoId }),
+    });
+
+    if (!response.ok) throw new Error("Erro ao remover pagantes");
+
+    const resultado = await response.json();
+    alert(resultado.mensagem);
+  } catch (error) {
+    console.error("Erro ao remover pagantes:", error);
+    alert("Erro ao remover pagantes. Tente novamente.");
   }
 };

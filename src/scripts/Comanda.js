@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const divPagantesTela = document.getElementById("lista-pagantes-com-preco");
     if (divPagantesTela) {
-      preencherPagantes = () => {
+      const preencherPagantes = () => {
         listaUsuariosPagantes?.forEach((pagante) => {
           const linha = document.createElement("span");
           linha.className = "pagante";
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const divPagantesEdicao = document.getElementById("lista-pagantes-edicao");
     if (divPagantesEdicao) {
-      preencherPagantesEdicao = () => {
+      const preencherPagantesEdicao = () => {
         divPagantesEdicao.innerHTML = "";
         listaUsuariosPagantes?.forEach((pagante, index) => {
           const div = document.createElement("div");
