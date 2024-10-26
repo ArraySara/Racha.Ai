@@ -113,6 +113,39 @@ function deletarEvento($conn)
     $stmt->close();
 }
 
+function atualizarEvento($conn)
+{
+    $data = json_decode(file_get_contents("php://input"), true);
+    $eventoId = $data['eventoId'] ?? null;
+    $nome = $data['estabelecimento'] ?? '';
+    $data_evento = $data['dataEvento'] ?? '';
+    $endereco = $data['endereco'] ?? '';
+
+    if (empty($eventoId)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'ID do evento é obrigatório!']);
+        return;
+    }
+
+    if (empty($nome) || empty($data_evento)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'Nome e/ou data do evento são obrigatórios!']);
+        return;
+    }
+
+    $stmt = $conn->prepare("UPDATE Evento SET nome = ?, data_evento = ?, endereco = ? WHERE id = ?");
+    $stmt->bind_param("sssi", $nome, $data_evento, $endereco, $eventoId);
+
+    if ($stmt->execute()) {
+        echo json_encode(['mensagem' => 'Evento atualizado com sucesso!']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['mensagem' => 'Erro ao atualizar evento!']);
+    }
+
+    $stmt->close();
+}
+
 switch ($metodo) {
     case 'GET':
         if (isset($_GET['eventoId'])) {
@@ -122,7 +155,12 @@ switch ($metodo) {
         }
         break;
     case 'POST':
-        adicionarEvento($conn);
+        $data = json_decode(file_get_contents("php://input"), true);
+        if (isset($data['operacao']) && $data['operacao'] === 'atualizar') {
+            atualizarEvento($conn);
+        } else {
+            adicionarEvento($conn);
+        }
         break;
     case 'DELETE':
         deletarEvento($conn);
