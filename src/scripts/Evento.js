@@ -63,6 +63,7 @@ const criarEvento = async (dados) => {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
+        acao: "adicionar",
         nome: dados.estabelecimento,
         data_evento: dados.dataEvento,
         endereco: dados.endereco,
@@ -79,9 +80,10 @@ const criarEvento = async (dados) => {
 
     if (resultado.eventoId) {
       window.location.href = `../comanda/Comanda.html?eventoId=${resultado.eventoId}`;
-    } else {
-      listarEventos();
+      return null;
     }
+
+    listarEventos();
   } catch (error) {
     console.error("Erro ao criar evento:", error);
     alert("Erro ao criar evento. Tente novamente.");
@@ -110,7 +112,7 @@ const removerEvento = async (id) => {
     const response = await fetch("../../backend/eventos.php", {
       method: "DELETE",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ id }),
+      body: new URLSearchParams({ acao: "deletar", id }),
     });
 
     if (!response.ok) throw new Error("Erro ao remover evento");

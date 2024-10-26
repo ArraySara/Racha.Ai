@@ -1,6 +1,7 @@
 const listaPagantes = document.getElementById("listaPagantes");
 const modalCriarEvento = document.getElementById("modalCriarEvento");
 const modalEditarEvento = document.getElementById("modalEditarEvento");
+const modalProdutoForm = document.getElementById("modalProdutoForm");
 const butoesFecharModal = document.querySelectorAll(".close");
 const botaoFab = document.getElementById("botao-fab");
 const opcoesFab = document.getElementById("opcoes-fab");
@@ -63,6 +64,9 @@ adicionarEventoSeExistir("btn-abrirModalCriarEvento", () =>
 );
 adicionarEventoSeExistir("btn-abrirModalEditarEvento", () =>
   abrirModal(modalEditarEvento)
+);
+adicionarEventoSeExistir("btn-abrirModalForm", () =>
+  abrirModal(modalProdutoForm)
 );
 adicionarEventoSeExistir("btn-creditos", () =>
   mudarTela("../creditos/Creditos.html")

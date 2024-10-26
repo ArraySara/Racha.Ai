@@ -30,6 +30,31 @@ function listarEventos($conn)
     $stmt->close();
 }
 
+function obterEvento($conn)
+{
+    $eventoId = $_GET['eventoId'] ?? null;
+
+    if (empty($eventoId)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'Identificador do evento é obrigatório!']);
+        return;
+    }
+
+    $stmt = $conn->prepare("SELECT * FROM Evento WHERE id = ?");
+    $stmt->bind_param("i", $eventoId);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows > 0) {
+        $evento = $resultado->fetch_assoc();
+        echo json_encode($evento);
+    } else {
+        http_response_code(404);
+        echo json_encode(['mensagem' => 'Evento não encontrado!']);
+    }
+
+    $stmt->close();
+}
 
 function adicionarEvento($conn)
 {
@@ -38,9 +63,15 @@ function adicionarEvento($conn)
     $data_evento = $_POST['data_evento'] ?? '';
     $fk_id_usuario = $_POST['fk_id_usuario'] ?? '';
 
-    if (empty($nome) || empty($data_evento) || empty($fk_id_usuario)) {
+    if (empty($fk_id_usuario)) {
         http_response_code(400);
-        echo json_encode(['mensagem' => 'Nome, data do evento e ID do usuário são obrigatórios']);
+        echo json_encode(['mensagem' => 'Usuário criador não identificado!']);
+        return;
+    }
+
+    if (empty($nome) || empty($data_evento)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'Nome e/ou data do evento são obrigatórios!']);
         return;
     }
 
@@ -49,15 +80,14 @@ function adicionarEvento($conn)
 
     if ($stmt->execute()) {
         $eventoId = $stmt->insert_id;
-        echo json_encode(['mensagem' => 'Evento adicionado com sucesso', 'eventoId' => $eventoId]);
+        echo json_encode(['mensagem' => 'Evento adicionado com sucesso!', 'eventoId' => $eventoId]);
     } else {
         http_response_code(500);
-        echo json_encode(['mensagem' => 'Erro ao adicionar evento']);
+        echo json_encode(['mensagem' => 'Erro ao adicionar evento!']);
     }
 
     $stmt->close();
 }
-
 
 function deletarEvento($conn)
 {
@@ -66,7 +96,7 @@ function deletarEvento($conn)
 
     if (empty($id)) {
         http_response_code(400);
-        echo json_encode(['mensagem' => 'ID do evento é obrigatório']);
+        echo json_encode(['mensagem' => 'Falha ao identificar o evento!']);
         return;
     }
 
@@ -74,10 +104,10 @@ function deletarEvento($conn)
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        echo json_encode(['mensagem' => 'Evento deletado com sucesso']);
+        echo json_encode(['mensagem' => 'Evento deletado com sucesso!']);
     } else {
         http_response_code(500);
-        echo json_encode(['mensagem' => 'Erro ao deletar evento']);
+        echo json_encode(['mensagem' => 'Erro ao deletar evento!']);
     }
 
     $stmt->close();
@@ -85,7 +115,11 @@ function deletarEvento($conn)
 
 switch ($metodo) {
     case 'GET':
-        listarEventos($conn);
+        if (isset($_GET['eventoId'])) {
+            obterEvento($conn);
+        } else {
+            listarEventos($conn);
+        }
         break;
     case 'POST':
         adicionarEvento($conn);
@@ -95,7 +129,7 @@ switch ($metodo) {
         break;
     default:
         http_response_code(405);
-        echo json_encode(['mensagem' => 'Método não permitido']);
+        echo json_encode(['mensagem' => 'Método não permitido!']);
         break;
 }
 
