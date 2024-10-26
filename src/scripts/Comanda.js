@@ -9,16 +9,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const response = await fetch(
+    const respostaGetEvento = await fetch(
       `../../backend/eventos.php?eventoId=${eventoId}`,
       { method: "GET" }
     );
 
-    if (!response.ok) throw new Error("Erro ao buscar informações do evento");
+    if (!respostaGetEvento.ok)
+      throw new Error("Erro ao buscar informações do evento!");
 
-    const evento = await response.json();
+    const evento = await respostaGetEvento.json();
     const nomeEvento = evento?.nome;
-    const listaUsuariosPagantes = evento?.pagantes || [{}];
+
+    const respostaGetPagantes = await fetch(
+      `../../backend/pagantesEventos.php?id_evento=${eventoId}`,
+      { method: "GET" }
+    );
+
+    if (!respostaGetPagantes.ok)
+      throw new Error("Erro ao buscar pagantes do evento!");
+
+    const listaUsuariosPagantes = await respostaGetPagantes.json();
 
     if (!nomeEvento) {
       window.location.href = "../evento/Evento.html";

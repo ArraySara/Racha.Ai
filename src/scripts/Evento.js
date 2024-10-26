@@ -85,7 +85,6 @@ const criarEvento = async (dados) => {
 
     if (resultado.eventoId) {
       await adicionarPagantes(resultado.eventoId);
-      // window.location.href = `../comanda/Comanda.html?eventoId=${resultado.eventoId}`;
       return null;
     }
   } catch (error) {
@@ -108,6 +107,7 @@ const adicionarPagantes = async (eventoId) => {
 
     if (!response.ok) throw new Error("Erro ao adicionar pagantes");
     listarEventos();
+    window.location.href = `../comanda/Comanda.html?eventoId=${eventoId}`;
   } catch (error) {
     console.error("Erro ao adicionar pagantes:", error);
     await removerTodosPagantesPorEvento(eventoId);
