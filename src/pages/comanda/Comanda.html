@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comanda Organizada</title>
-    <link rel="stylesheet" href="../../styles/comanda.css" />
     <link rel="stylesheet" href="../../styles/base.css" />
   </head>
   <body>
@@ -12,7 +11,7 @@
       <div class="container-fab">
         <button id="botao-fab">+</button>
         <div id="opcoes-fab" style="display: none">
-          <button class="opcao-fab" id="btn-abrirModalCriarProduto">
+          <button class="opcao-fab" id="btn-abrirModalForm">
             Adicionar produto
           </button>
           <button class="opcao-fab" id="btn-abrirModalEditarEvento">
@@ -57,36 +56,120 @@
           class="pagantes"
           style="display: flex; flex-direction: column"
         ></div>
+        <!-- Modal para editar evento -->
+        <div id="modalEditarEvento" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Editar evento</h2>
+            <form id="formEditarEvento">
+              <label for="editarEstabelecimento">Estabelecimento:</label>
+              <input
+                type="text"
+                id="campo-estabelecimento"
+                name="editarEstabelecimento"
+                value=""
+                required
+              />
+
+              <label for="editarDataEvento">Data do evento:</label>
+              <input
+                type="date"
+                id="campo-dataEvento"
+                name="editarDataEvento"
+                value=""
+                required
+              />
+
+              <label for="editarEndereco">Endereço:</label>
+              <input
+                type="text"
+                id="campo-endereco"
+                name="editarEndereco"
+                value=""
+                required
+              />
+              <div style="display: flex; flex: 1">
+                <div style="display: flex; flex-direction: column; flex: 9">
+                  <label for="nomePagante">Nome do pagante:</label>
+                  <input type="text" id="nomePagante" name="nomePagante" />
+                </div>
+                <button
+                  type="button"
+                  style="
+                    display: flex;
+                    flex: 3;
+                    margin-left: 10px;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                  id="btn-adicionarPagante"
+                >
+                  Adicionar
+                </button>
+              </div>
+              <div
+                id="lista-pagantes-edicao"
+                style="
+                  padding: 5px;
+                  height: 100px;
+                  overflow: auto;
+                  margin-top: 10px;
+                  border-width: 1px;
+                  border-color: black;
+                  border-style: solid;
+                "
+              ></div>
+              <button type="submit" id="btnSalvarEdicaoEvento">Salvar</button>
+            </form>
+          </div>
+        </div>
+        <!-- Modal para adicionar produto -->
+        <div id="modalProdutoForm" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar produto</h2>
+            <form id="formAdicionarProduto">
+              <label for="nomeProduto">Nome:</label>
+              <input
+                type="text"
+                id="nomeProduto"
+                name="nomeProduto"
+                placeholder="Digite o nome do produto"
+                required
+              />
+
+              <label for="precoProduto">Preço:</label>
+              <input
+                type="number"
+                id="precoProduto"
+                name="precoProduto"
+                placeholder="Digite o preço"
+                required
+              />
+
+              <label for="quantidadeProduto">Quantidade:</label>
+              <input
+                type="number"
+                id="quantidadeProduto"
+                name="quantidadeProduto"
+                placeholder="Digite a quantidade"
+                required
+              />
+
+              <label for="paganteProduto">Pagante:</label>
+              <select
+                id="select-listaPagantes"
+                name="paganteProduto"
+                required
+              ></select>
+
+              <button type="submit" id="btnSalvarProduto">Salvar</button>
+            </form>
+          </div>
+        </div>
       </main>
     </div>
-
     <script src="../../scripts/comanda.js"></script>
     <script src="../../scripts/base.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventoId = urlParams.get("eventoId");
-
-        if (eventoId) {
-          fetch(`../../backend/getEvento.php?eventoId=${eventoId}`)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.erro) {
-                alert("Erro ao carregar evento: " + data.erro);
-                window.location.href = "../evento/Evento.html";
-              } else {
-                document.getElementById("nome-evento").textContent = data.nome;
-                // Preencher outros campos do evento, se necessário
-              }
-            })
-            .catch((error) => {
-              console.error("Erro ao buscar evento:", error);
-            });
-        } else {
-          alert("ID do evento não fornecido.");
-          window.location.href = "../evento/Evento.html";
-        }
-      });
-    </script>
   </body>
 </html>

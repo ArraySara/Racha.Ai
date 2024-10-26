@@ -5,83 +5,303 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!eventoId) {
     window.location.href = "../evento/Evento.html";
     alert("Evento não identificado!");
-    return;
+    return null;
   }
 
+  let eventoOriginal = {};
+  let pagantesOriginais = [];
+
   try {
-    const response = await fetch(
+    const respostaGetEvento = await fetch(
       `../../backend/eventos.php?eventoId=${eventoId}`,
-      {
-        method: "GET",
-      }
+      { method: "GET" }
     );
 
-    if (!response.ok) throw new Error("Erro ao buscar informações do evento");
+    if (!respostaGetEvento.ok)
+      throw new Error("Erro ao buscar informações do evento!");
 
-    const evento = await response.json();
+    const evento = await respostaGetEvento.json();
+    eventoOriginal = { ...evento };
+    const nomeEvento = evento?.nome;
 
-    if (!evento?.nome) {
+    const respostaGetPagantes = await fetch(
+      `../../backend/pagantesEventos.php?id_evento=${eventoId}`,
+      { method: "GET" }
+    );
+
+    if (!respostaGetPagantes.ok)
+      throw new Error("Erro ao buscar pagantes do evento!");
+
+    const listaUsuariosPagantes = await respostaGetPagantes.json();
+    pagantesOriginais = [...listaUsuariosPagantes];
+
+    if (!nomeEvento) {
       window.location.href = "../evento/Evento.html";
       alert("Evento não identificado!");
-      return;
+      return null;
     }
 
     const nomeEventoComponente = document.getElementById("nome-evento");
-    nomeEventoComponente.innerText = evento.nome || "Comanda do evento";
+    if (nomeEventoComponente) {
+      nomeEventoComponente.innerText = nomeEvento || "Comanda do evento";
+    }
 
     const estabelecimentoComponente = document.getElementById(
       "campo-estabelecimento"
     );
-    estabelecimentoComponente.value = evento.nome;
+    if (estabelecimentoComponente) {
+      estabelecimentoComponente.value = nomeEvento;
+    }
 
     const dataEventoComponente = document.getElementById("campo-dataEvento");
-    dataEventoComponente.value = evento.data_evento;
+    if (dataEventoComponente) {
+      dataEventoComponente.value = evento.data_evento;
+    }
 
     const enderecoComponente = document.getElementById("campo-endereco");
-    enderecoComponente.value = evento?.endereco || "N/A";
+    if (enderecoComponente) {
+      enderecoComponente.value = evento?.endereco || "N/A";
+    }
 
     const divPagantesTela = document.getElementById("lista-pagantes-com-preco");
-    preencherPagantes = () => {
-      evento?.pagantes?.forEach((pagante) => {
-        const linha = document.createElement("span");
-        linha.className = "pagante";
-        linha.innerText = `Pagante: ${pagante.nome} - R$ 0,00`;
+    if (divPagantesTela) {
+      const preencherPagantes = () => {
+        listaUsuariosPagantes?.forEach((pagante) => {
+          const linha = document.createElement("span");
+          linha.style.cursor = "pointer";
+          linha.style.backgroundColor = "#fff";
+          linha.style.padding = "10px";
+          linha.style.marginBottom = "10px";
+          linha.style.borderRadius = "5px";
+          linha.style.fontSize = "16px";
+          linha.style.transition = "background-color 0.3s";
 
-        divPagantesTela.appendChild(linha);
-      });
-    };
+          linha.innerText = `Pagante: ${pagante?.nome || "Não identificado"}`;
 
-    preencherPagantes();
+          linha.onmouseover = () => {
+            linha.style.backgroundColor = "#e0e0e0";
+          };
+          linha.onmouseout = () => {
+            linha.style.backgroundColor = "#fff";
+          };
+
+          linha.onclick = async () => {
+            const detalhesAberto = divPagantesTela.querySelector(".detalhes");
+            if (detalhesAberto && detalhesAberto !== linha.nextSibling) {
+              detalhesAberto.remove();
+            }
+
+            const detalhes = document.createElement("div");
+            detalhes.style.padding = "5px 10px";
+            detalhes.style.marginBottom = "15px";
+            detalhes.style.borderLeft = "2px solid #4caf50";
+            detalhes.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+            detalhes.style.color = "#FFFFFF";
+            detalhes.className = "detalhes";
+
+            const produtosContainer = document.createElement("div");
+            produtosContainer.style.overflowY = "auto";
+            produtosContainer.style.maxHeight = "150px";
+            produtosContainer.style.whiteSpace = "normal";
+            produtosContainer.style.wordWrap = "break-word";
+            produtosContainer.style.marginBottom = "10px";
+
+            const response = await fetch(
+              `../../backend/produtosComprados.php?id_pagante=${pagante.id}`
+            );
+
+            let totalGeral = 0;
+
+            if (response.ok) {
+              const produtos = await response.json();
+              if (produtos.length === 0) {
+                produtosContainer.innerHTML = `<strong>Sem produtos comprados.</strong>`;
+              } else {
+                let html = "";
+                produtos.forEach((produto, index) => {
+                  const nome = produto.nome;
+                  const quantidade = produto.quantidade;
+                  const preco = produto.preco.toFixed(2).replace(".", ",");
+                  const total = (quantidade * produto.preco)
+                    .toFixed(2)
+                    .replace(".", ",");
+
+                  html += `<strong>${nome}</strong> - R$ ${preco}`;
+                  html += ` <br />x${quantidade} = R$ ${total}`;
+
+                  if (index < produtos.length - 1) {
+                    html += `<br /><br />`;
+                  }
+
+                  totalGeral += quantidade * produto.preco;
+                });
+
+                produtosContainer.innerHTML = html;
+              }
+            } else {
+              produtosContainer.innerHTML = `<strong>Erro ao carregar produtos.</strong>`;
+            }
+
+            detalhes.appendChild(produtosContainer);
+
+            const totalContainer = document.createElement("div");
+            totalContainer.innerHTML = `<strong>Total: R$ ${totalGeral
+              .toFixed(2)
+              .replace(".", ",")}</strong>`;
+            detalhes.appendChild(totalContainer);
+
+            const jaTemPaganteComDetalhe =
+              linha.nextSibling && linha.nextSibling.className === "detalhes";
+
+            if (jaTemPaganteComDetalhe) {
+              linha.nextSibling.remove();
+            } else {
+              linha.parentNode.insertBefore(detalhes, linha.nextSibling);
+            }
+          };
+
+          divPagantesTela.appendChild(linha);
+        });
+      };
+
+      preencherPagantes();
+    }
 
     const divPagantesEdicao = document.getElementById("lista-pagantes-edicao");
-    preencherPagantesEdicao = () => {
-      divPagantesEdicao.innerHTML = "";
-      evento?.pagantes?.forEach((pagante, index) => {
-        const div = document.createElement("div");
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.marginBottom = "10px";
-        div.style.borderBottomWidth = "2px";
-        div.style.borderBottomStyle = "dashed";
-        div.style.borderBottomColor = "#000000";
+    if (divPagantesEdicao) {
+      const preencherPagantesEdicao = () => {
+        divPagantesEdicao.innerHTML = "";
+        listaUsuariosPagantes?.forEach((pagante, index) => {
+          const div = document.createElement("div");
+          div.style.display = "flex";
+          div.style.alignItems = "center";
+          div.style.marginBottom = "10px";
+          div.style.borderBottomWidth = "2px";
+          div.style.borderBottomStyle = "dashed";
+          div.style.borderBottomColor = "#000000";
 
-        const btnExcluir = document.createElement("span");
-        btnExcluir.textContent = "🗑️";
-        btnExcluir.style.cursor = "pointer";
-        btnExcluir.style.marginRight = "10px";
-        btnExcluir.style.marginBottom = "3px";
-        btnExcluir.onclick = () => {
-          evento?.pagantes.splice(index, 1);
-          preencherPagantesEdicao();
-        };
+          const btnExcluir = document.createElement("span");
+          btnExcluir.textContent = "🗑️";
+          btnExcluir.style.cursor = "pointer";
+          btnExcluir.style.marginRight = "10px";
+          btnExcluir.style.marginBottom = "3px";
+          btnExcluir.onclick = () => {
+            listaUsuariosPagantes.splice(index, 1);
+            preencherPagantesEdicao();
+          };
 
-        div.appendChild(btnExcluir);
-        div.appendChild(document.createTextNode(pagante.nome));
-        divPagantesEdicao.appendChild(div);
+          div.appendChild(btnExcluir);
+          div.appendChild(document.createTextNode(pagante.nome));
+          divPagantesEdicao.appendChild(div);
+        });
+      };
+
+      preencherPagantesEdicao();
+    }
+
+    document
+      .getElementById("btnSalvarEdicaoEvento")
+      .addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const estabelecimento = estabelecimentoComponente.value;
+        const dataEvento = dataEventoComponente.value;
+        const endereco = enderecoComponente.value;
+
+        let eventoAlterado =
+          estabelecimento !== eventoOriginal.nome ||
+          dataEvento !== eventoOriginal.data_evento ||
+          endereco !== eventoOriginal.endereco;
+
+        let pagantesAdicionados =
+          pagantes?.filter(
+            (pagante) =>
+              !pagantesOriginais.some((original) => original.id === pagante.id)
+          ) || [];
+
+        let pagantesRemovidos =
+          pagantesOriginais?.filter(
+            (original) =>
+              !listaUsuariosPagantes.some(
+                (pagante) => pagante.id === original.id
+              )
+          ) || [];
+
+        const nadaPraAlterar =
+          !eventoAlterado &&
+          pagantesAdicionados?.length === 0 &&
+          pagantesRemovidos?.length === 0;
+
+        if (nadaPraAlterar) {
+          alert("Nenhuma alteração foi detectada.");
+          return;
+        }
+
+        modalEditarEvento.style.display = "none";
+
+        if (eventoAlterado) {
+          try {
+            const respostaUpdateEvento = await fetch(
+              `../../backend/eventos.php`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  eventoId,
+                  estabelecimento,
+                  dataEvento,
+                  endereco,
+                  operacao: "atualizar",
+                }),
+              }
+            );
+
+            if (!respostaUpdateEvento.ok)
+              throw new Error("Erro ao atualizar evento!");
+
+            eventoOriginal.nome = estabelecimento;
+            eventoOriginal.data_evento = dataEvento;
+            eventoOriginal.endereco = endereco;
+            nomeEventoComponente.innerText = estabelecimento;
+
+            alert("Evento atualizado com sucesso!");
+          } catch (error) {
+            console.error("Erro ao atualizar o evento:", error);
+            alert("Erro ao atualizar evento. Tente novamente.");
+          }
+        }
+
+        if (pagantesAdicionados?.length > 0) {
+          await fetch("../../backend/pagantesEventos.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              acao: "adicionar",
+              id_evento: eventoId,
+              pagantes: JSON.stringify(
+                pagantesAdicionados?.map((nome) => ({ nome }))
+              ),
+            }),
+          });
+        }
+
+        for (const pagante of pagantesRemovidos) {
+          try {
+            await fetch("../../backend/pagantesEventos.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                acao: "remover",
+                id_pagante: pagante?.id,
+              }),
+            });
+          } catch (error) {
+            console.error("Erro ao remover pagante:", error);
+          }
+        }
+
+        window.location.reload();
       });
-    };
-
-    preencherPagantesEdicao();
   } catch (error) {
     console.error("Erro ao buscar informações do evento:", error);
     alert("Erro ao buscar informações do evento. Tente novamente.");

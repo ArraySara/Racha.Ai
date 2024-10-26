@@ -1,13 +1,14 @@
 const listaPagantes = document.getElementById("listaPagantes");
 const modalCriarEvento = document.getElementById("modalCriarEvento");
 const modalEditarEvento = document.getElementById("modalEditarEvento");
+const modalProdutoForm = document.getElementById("modalProdutoForm");
 const butoesFecharModal = document.querySelectorAll(".close");
 const botaoFab = document.getElementById("botao-fab");
 const opcoesFab = document.getElementById("opcoes-fab");
 let fabAberto = false;
 let timer;
 
-const pagantes = [];
+let pagantes = [];
 
 const adicionarEventoSeExistir = (id, evento) => {
   const elemento = document.getElementById(id);
@@ -63,6 +64,9 @@ adicionarEventoSeExistir("btn-abrirModalCriarEvento", () =>
 );
 adicionarEventoSeExistir("btn-abrirModalEditarEvento", () =>
   abrirModal(modalEditarEvento)
+);
+adicionarEventoSeExistir("btn-abrirModalForm", () =>
+  abrirModal(modalProdutoForm)
 );
 adicionarEventoSeExistir("btn-creditos", () =>
   mudarTela("../creditos/Creditos.html")
@@ -130,8 +134,91 @@ document.addEventListener("mouseout", (event) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const usuarioComponente = document.getElementById("nome-usuario");
   usuarioComponente.innerText = usuarioLogado?.nome;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventoId = urlParams?.get("eventoId");
+  const editando = eventoId !== undefined && eventoId !== null;
+  if (editando) {
+    const respostaGetPagantes = await fetch(
+      `../../backend/pagantesEventos.php?id_evento=${eventoId}`,
+      { method: "GET" }
+    );
+
+    if (!respostaGetPagantes.ok)
+      throw new Error("Erro ao buscar pagantes do evento!");
+
+    const listaUsuariosPagantes = await respostaGetPagantes.json();
+    pagantes = pagantes.concat(listaUsuariosPagantes);
+  }
+
+  atualizarSelectPagantes();
 });
+
+const selectPagante = document.getElementById("select-listaPagantes");
+const atualizarSelectPagantes = () => {
+  if (selectPagante) {
+    selectPagante.innerHTML = "";
+
+    pagantes.forEach((pagante) => {
+      const option = document.createElement("option");
+      option.value = pagante.id;
+      option.textContent = pagante.nome;
+      selectPagante.appendChild(option);
+    });
+  }
+};
+
+const atualizarListaPagantes = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventoId = urlParams?.get("eventoId");
+  const editando = eventoId !== undefined && eventoId !== null;
+  const nomeListaPagantes = editando
+    ? "lista-pagantes-edicao"
+    : "listaPagantes";
+
+  const listaPagantes = document.getElementById(nomeListaPagantes);
+  listaPagantes.innerHTML = "";
+
+  pagantes.forEach((pagante, index) => {
+    const div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.alignItems = "center";
+    div.style.marginBottom = "10px";
+    div.style.borderBottomWidth = "2px";
+    div.style.borderBottomStyle = "dashed";
+    div.style.borderBottomColor = "#000000";
+
+    const btnRemover = document.createElement("span");
+    btnRemover.textContent = "🗑️";
+    btnRemover.style.cursor = "pointer";
+    btnRemover.style.marginRight = "10px";
+    btnRemover.style.marginBottom = "3px";
+    btnRemover.onclick = () => {
+      pagantes.splice(index, 1);
+      atualizarListaPagantes();
+    };
+
+    div.appendChild(btnRemover);
+    div.appendChild(document.createTextNode(pagante?.nome || pagante));
+    listaPagantes.appendChild(div);
+  });
+};
+
+const btnAdicionarPagante = document.getElementById("btn-adicionarPagante");
+if (btnAdicionarPagante) {
+  btnAdicionarPagante.addEventListener("click", () => {
+    const nomePagante = document.getElementById("nomePagante").value;
+    if (!nomePagante) {
+      alert("Por favor, insira o nome do pagante!");
+      return;
+    }
+
+    pagantes.push(nomePagante);
+    atualizarListaPagantes();
+    document.getElementById("nomePagante").value = "";
+  });
+}

@@ -65,6 +65,37 @@
 
             <label for="endereco">Endereço:</label>
             <input type="text" id="endereco" name="endereco" required />
+            <div style="display: flex; flex: 1">
+              <div style="display: flex; flex-direction: column; flex: 9">
+                <label for="nomePagante">Nome do pagante:</label>
+                <input type="text" id="nomePagante" name="nomePagante" />
+              </div>
+              <button
+                type="button"
+                style="
+                  display: flex;
+                  flex: 3;
+                  margin-left: 10px;
+                  justify-content: center;
+                  align-items: center;
+                "
+                id="btn-adicionarPagante"
+              >
+                Adicionar
+              </button>
+            </div>
+            <div
+              id="listaPagantes"
+              style="
+                padding: 5px;
+                height: 100px;
+                overflow: auto;
+                margin-top: 10px;
+                border-width: 1px;
+                border-color: black;
+                border-style: solid;
+              "
+            ></div>
 
             <button type="submit" id="btn-criarEvento">Salvar</button>
           </form>
@@ -85,8 +116,7 @@
         </table>
       </main>
     </div>
-
-    <script src="../../scripts/evento.js"></script>
     <script src="../../scripts/base.js"></script>
+    <script src="../../scripts/evento.js"></script>
   </body>
 </html>
