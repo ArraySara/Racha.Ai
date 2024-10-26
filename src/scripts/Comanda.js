@@ -81,34 +81,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const divPagantesEdicao = document.getElementById("lista-pagantes-edicao");
-    const preencherPagantesEdicao = () => {
-      divPagantesEdicao.innerHTML = "";
-      listaUsuariosPagantes?.forEach((pagante, index) => {
-        const div = document.createElement("div");
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.marginBottom = "10px";
-        div.style.borderBottomWidth = "2px";
-        div.style.borderBottomStyle = "dashed";
-        div.style.borderBottomColor = "#000000";
+    if (divPagantesEdicao) {
+      const preencherPagantesEdicao = () => {
+        divPagantesEdicao.innerHTML = "";
+        listaUsuariosPagantes?.forEach((pagante, index) => {
+          const div = document.createElement("div");
+          div.style.display = "flex";
+          div.style.alignItems = "center";
+          div.style.marginBottom = "10px";
+          div.style.borderBottomWidth = "2px";
+          div.style.borderBottomStyle = "dashed";
+          div.style.borderBottomColor = "#000000";
 
-        const btnExcluir = document.createElement("span");
-        btnExcluir.textContent = "🗑️";
-        btnExcluir.style.cursor = "pointer";
-        btnExcluir.style.marginRight = "10px";
-        btnExcluir.style.marginBottom = "3px";
-        btnExcluir.onclick = () => {
-          listaUsuariosPagantes.splice(index, 1);
-          preencherPagantesEdicao();
-        };
+          const btnExcluir = document.createElement("span");
+          btnExcluir.textContent = "🗑️";
+          btnExcluir.style.cursor = "pointer";
+          btnExcluir.style.marginRight = "10px";
+          btnExcluir.style.marginBottom = "3px";
+          btnExcluir.onclick = () => {
+            listaUsuariosPagantes.splice(index, 1);
+            preencherPagantesEdicao();
+          };
 
-        div.appendChild(btnExcluir);
-        div.appendChild(document.createTextNode(pagante.nome));
-        divPagantesEdicao.appendChild(div);
-      });
-    };
+          div.appendChild(btnExcluir);
+          div.appendChild(document.createTextNode(pagante.nome));
+          divPagantesEdicao.appendChild(div);
+        });
+      };
 
-    preencherPagantesEdicao();
+      preencherPagantesEdicao();
+    }
 
     document
       .getElementById("btnSalvarEdicaoEvento")
@@ -125,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           endereco !== eventoOriginal.endereco;
 
         let pagantesAdicionados =
-          listaUsuariosPagantes?.filter(
+          pagantes?.filter(
             (pagante) =>
               !pagantesOriginais.some((original) => original.id === pagante.id)
           ) || [];
@@ -182,36 +184,36 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
 
-        for (const pagante of pagantesAdicionados) {
-          try {
-            await fetch(`../../backend/pagantesEventos.php`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                nome: pagante.nome,
-                id_evento: eventoId,
-                operacao: "adicionar",
-              }),
-            });
-          } catch (error) {
-            console.error("Erro ao adicionar pagante:", error);
-          }
+        if (pagantesAdicionados?.length > 0) {
+          await fetch("../../backend/pagantesEventos.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              acao: "adicionar",
+              id_evento: eventoId,
+              pagantes: JSON.stringify(
+                pagantesAdicionados?.map((nome) => ({ nome }))
+              ),
+            }),
+          });
         }
 
         for (const pagante of pagantesRemovidos) {
           try {
-            await fetch(`../../backend/pagantesEventos.php`, {
+            await fetch("../../backend/pagantesEventos.php", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                id: pagante.id,
-                operacao: "remover",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                acao: "remover",
+                id_pagante: pagante?.id,
               }),
             });
           } catch (error) {
             console.error("Erro ao remover pagante:", error);
           }
         }
+
+        window.location.reload();
       });
   } catch (error) {
     console.error("Erro ao buscar informações do evento:", error);

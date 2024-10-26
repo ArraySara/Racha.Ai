@@ -134,14 +134,51 @@ document.addEventListener("mouseout", (event) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const usuarioComponente = document.getElementById("nome-usuario");
   usuarioComponente.innerText = usuarioLogado?.nome;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventoId = urlParams?.get("eventoId");
+  const editando = eventoId !== undefined && eventoId !== null;
+  if (editando) {
+    const respostaGetPagantes = await fetch(
+      `../../backend/pagantesEventos.php?id_evento=${eventoId}`,
+      { method: "GET" }
+    );
+
+    if (!respostaGetPagantes.ok)
+      throw new Error("Erro ao buscar pagantes do evento!");
+
+    const listaUsuariosPagantes = await respostaGetPagantes.json();
+    pagantes = pagantes.concat(listaUsuariosPagantes);
+  }
+
+  atualizarSelectPagantes();
 });
 
+const selectPagante = document.getElementById("select-listaPagantes");
+const atualizarSelectPagantes = () => {
+  selectPagante.innerHTML = "";
+
+  pagantes.forEach((pagante) => {
+    const option = document.createElement("option");
+    option.value = pagante.id;
+    option.textContent = pagante.nome;
+    selectPagante.appendChild(option);
+  });
+};
+
 const atualizarListaPagantes = () => {
-  const listaPagantes = document.getElementById("listaPagantes");
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventoId = urlParams?.get("eventoId");
+  const editando = eventoId !== undefined && eventoId !== null;
+  const nomeListaPagantes = editando
+    ? "lista-pagantes-edicao"
+    : "listaPagantes";
+
+  const listaPagantes = document.getElementById(nomeListaPagantes);
   listaPagantes.innerHTML = "";
 
   pagantes.forEach((pagante, index) => {
@@ -164,7 +201,7 @@ const atualizarListaPagantes = () => {
     };
 
     div.appendChild(btnRemover);
-    div.appendChild(document.createTextNode(pagante));
+    div.appendChild(document.createTextNode(pagante?.nome || pagante));
     listaPagantes.appendChild(div);
   });
 };

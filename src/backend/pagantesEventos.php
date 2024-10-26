@@ -64,7 +64,6 @@ function adicionarPagantes($conn)
     $stmt->close();
 }
 
-
 function removerPagantePorId($conn)
 {
     $id_pagante = $_POST['id_pagante'] ?? '';
