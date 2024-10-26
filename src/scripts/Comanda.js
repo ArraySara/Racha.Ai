@@ -68,10 +68,97 @@ document.addEventListener("DOMContentLoaded", async () => {
       const preencherPagantes = () => {
         listaUsuariosPagantes?.forEach((pagante) => {
           const linha = document.createElement("span");
-          linha.className = "pagante";
-          linha.innerText = `Pagante: ${
-            pagante?.nome || "Não identificado"
-          } - R$ 0,00`;
+          linha.style.cursor = "pointer";
+          linha.style.backgroundColor = "#fff";
+          linha.style.padding = "10px";
+          linha.style.marginBottom = "10px";
+          linha.style.borderRadius = "5px";
+          linha.style.fontSize = "16px";
+          linha.style.transition = "background-color 0.3s";
+
+          linha.innerText = `Pagante: ${pagante?.nome || "Não identificado"}`;
+
+          linha.onmouseover = () => {
+            linha.style.backgroundColor = "#e0e0e0";
+          };
+          linha.onmouseout = () => {
+            linha.style.backgroundColor = "#fff";
+          };
+
+          linha.onclick = async () => {
+            const detalhesAberto = divPagantesTela.querySelector(".detalhes");
+            if (detalhesAberto && detalhesAberto !== linha.nextSibling) {
+              detalhesAberto.remove();
+            }
+
+            const detalhes = document.createElement("div");
+            detalhes.style.padding = "5px 10px";
+            detalhes.style.marginBottom = "15px";
+            detalhes.style.borderLeft = "2px solid #4caf50";
+            detalhes.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+            detalhes.style.color = "#FFFFFF";
+            detalhes.className = "detalhes";
+
+            const produtosContainer = document.createElement("div");
+            produtosContainer.style.overflowY = "auto";
+            produtosContainer.style.maxHeight = "150px";
+            produtosContainer.style.whiteSpace = "normal";
+            produtosContainer.style.wordWrap = "break-word";
+            produtosContainer.style.marginBottom = "10px";
+
+            const response = await fetch(
+              `../../backend/produtosComprados.php?id_pagante=${pagante.id}`
+            );
+
+            let totalGeral = 0;
+
+            if (response.ok) {
+              const produtos = await response.json();
+              if (produtos.length === 0) {
+                produtosContainer.innerHTML = `<strong>Sem produtos comprados.</strong>`;
+              } else {
+                let html = "";
+                produtos.forEach((produto, index) => {
+                  const nome = produto.nome;
+                  const quantidade = produto.quantidade;
+                  const preco = produto.preco.toFixed(2).replace(".", ",");
+                  const total = (quantidade * produto.preco)
+                    .toFixed(2)
+                    .replace(".", ",");
+
+                  html += `<strong>${nome}</strong> - R$ ${preco}`;
+                  html += ` <br />x${quantidade} = R$ ${total}`;
+
+                  if (index < produtos.length - 1) {
+                    html += `<br /><br />`;
+                  }
+
+                  totalGeral += quantidade * produto.preco;
+                });
+
+                produtosContainer.innerHTML = html;
+              }
+            } else {
+              produtosContainer.innerHTML = `<strong>Erro ao carregar produtos.</strong>`;
+            }
+
+            detalhes.appendChild(produtosContainer);
+
+            const totalContainer = document.createElement("div");
+            totalContainer.innerHTML = `<strong>Total: R$ ${totalGeral
+              .toFixed(2)
+              .replace(".", ",")}</strong>`;
+            detalhes.appendChild(totalContainer);
+
+            const jaTemPaganteComDetalhe =
+              linha.nextSibling && linha.nextSibling.className === "detalhes";
+
+            if (jaTemPaganteComDetalhe) {
+              linha.nextSibling.remove();
+            } else {
+              linha.parentNode.insertBefore(detalhes, linha.nextSibling);
+            }
+          };
 
           divPagantesTela.appendChild(linha);
         });

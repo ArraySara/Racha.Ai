@@ -160,14 +160,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 const selectPagante = document.getElementById("select-listaPagantes");
 const atualizarSelectPagantes = () => {
-  selectPagante.innerHTML = "";
+  if (selectPagante) {
+    selectPagante.innerHTML = "";
 
-  pagantes.forEach((pagante) => {
-    const option = document.createElement("option");
-    option.value = pagante.id;
-    option.textContent = pagante.nome;
-    selectPagante.appendChild(option);
-  });
+    pagantes.forEach((pagante) => {
+      const option = document.createElement("option");
+      option.value = pagante.id;
+      option.textContent = pagante.nome;
+      selectPagante.appendChild(option);
+    });
+  }
 };
 
 const atualizarListaPagantes = () => {
