@@ -64,16 +64,19 @@ const criarEvento = async (dados) => {
       return;
     }
 
+    const parametros = {
+      acao: "adicionar",
+      nome: dados.estabelecimento,
+      data_evento: dados.dataEvento,
+      endereco: dados.endereco,
+      taxaGarcom: dados?.taxaGarcom,
+      fk_id_usuario: usuario.id,
+    };
+
     const response = await fetch("../../backend/eventos.php", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        acao: "adicionar",
-        nome: dados.estabelecimento,
-        data_evento: dados.dataEvento,
-        endereco: dados.endereco,
-        fk_id_usuario: usuario.id,
-      }),
+      body: new URLSearchParams(parametros),
     });
 
     if (!response.ok) throw new Error("Erro ao criar evento!");
@@ -120,13 +123,20 @@ document.getElementById("btn-criarEvento").addEventListener("click", (e) => {
   const estabelecimento = document.getElementById("estabelecimento").value;
   const dataEvento = document.getElementById("dataEvento").value;
   const endereco = document.getElementById("endereco").value;
+  const taxaGarcom = document.getElementById("taxaGarcom").value || 0;
 
   if (!estabelecimento || !dataEvento || !endereco) {
     alert("Por favor, preencha todos os campos.");
     return;
   }
 
-  const dados = { estabelecimento, dataEvento, endereco };
+  const dados = {
+    estabelecimento,
+    dataEvento,
+    endereco,
+    taxaGarcom,
+  };
+
   criarEvento(dados);
 });
 

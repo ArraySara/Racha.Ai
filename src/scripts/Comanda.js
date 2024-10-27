@@ -79,6 +79,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       enderecoComponente.value = evento?.endereco || "N/A";
     }
 
+    const porcentagemGarcomComponente =
+      document.getElementById("campo-taxaGarcom");
+    if (porcentagemGarcomComponente) {
+      porcentagemGarcomComponente.value = evento?.taxa_garcom || 0;
+    }
+
     const divPagantesTela = document.getElementById("lista-pagantes-com-preco");
     if (divPagantesTela) {
       const preencherPagantes = () => {
@@ -131,14 +137,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
               const produtos = await response.json();
 
+              const listaProdutos = [...produtos];
+              totalGeral = produtos?.reduce((total, produto) => {
+                const quantidade = produto.quantidade || 1;
+                return total + quantidade * produto.preco;
+              }, 0);
+
+              const taxaGarcomInformada = evento?.taxa_garcom;
+              const temTaxaGarcom =
+                taxaGarcomInformada && taxaGarcomInformada > 0;
+
+              if (temTaxaGarcom) {
+                const porcentagemTaxaGarcom = taxaGarcomInformada / 100;
+                const taxaGarcom = totalGeral * porcentagemTaxaGarcom;
+                listaProdutos.push({
+                  nome: `Taxa do garçom (${taxaGarcomInformada}%)`,
+                  preco: taxaGarcom,
+                  eTaxa: true,
+                });
+
+                totalGeral += taxaGarcom;
+              }
+
               if (produtos.length === 0) {
-                produtosContainer.innerHTML = `<strong>Sem produtos comprados.</strong>`;
+                produtosContainer.innerHTML = `<strong>Sem produtos comprados!</strong>`;
               } else {
-                produtos.forEach((produto) => {
+                listaProdutos.forEach((produto) => {
+                  const eTaxa = produto?.eTaxa === true;
                   produto.id_pagante = pagante?.id;
 
                   const nome = produto?.nome;
-                  const quantidade = produto?.quantidade;
+                  const quantidade = produto?.quantidade || 1;
                   const preco = produto?.preco;
                   const precoEmReal = preco?.toFixed(2)?.replace(".", ",");
                   const total = (quantidade * preco)
@@ -154,42 +183,45 @@ document.addEventListener("DOMContentLoaded", async () => {
                   divProduto.style.alignItems = "center";
 
                   const infoProduto = document.createElement("div");
+                  const valorComQuantidades = eTaxa
+                    ? ""
+                    : `<br />x${quantidade} = R$ ${total}`;
+
                   infoProduto.innerHTML = `
                     <strong>${nome}</strong> - R$ ${precoEmReal}
-                    <br />x${quantidade} = R$ ${total}
-                  `;
-
-                  const containerBotoes = document.createElement("div");
-
-                  const btnEditar = document.createElement("img");
-                  btnEditar.src = "../../assets/pencil.png";
-                  btnEditar.alt = "Editar";
-                  btnEditar.style.cursor = "pointer";
-                  btnEditar.style.width = "22px";
-                  btnEditar.style.height = "22px";
-                  btnEditar.style.marginRight = "5px";
-                  btnEditar.id = "btn-editarProduto";
-                  btnEditar.onclick = () => abrirModalProduto(produto);
-
-                  const btnExcluir = document.createElement("img");
-                  btnExcluir.src = "../../assets/trash.png";
-                  btnExcluir.alt = "Excluir";
-                  btnExcluir.style.cursor = "pointer";
-                  btnExcluir.style.width = "24px";
-                  btnExcluir.style.height = "24px";
-                  btnExcluir.id = "btn-excluirProduto";
-                  btnExcluir.onclick = () =>
-                    removerProdutoComprado(produto?.id);
-
-                  containerBotoes.appendChild(btnEditar);
-                  containerBotoes.appendChild(btnExcluir);
+                    ${valorComQuantidades}
+                    `;
 
                   divProduto.appendChild(infoProduto);
-                  divProduto.appendChild(containerBotoes);
+                  if (!eTaxa) {
+                    const containerBotoes = document.createElement("div");
+
+                    const btnEditar = document.createElement("img");
+                    btnEditar.src = "../../assets/pencil.png";
+                    btnEditar.alt = "Editar";
+                    btnEditar.style.cursor = "pointer";
+                    btnEditar.style.width = "22px";
+                    btnEditar.style.height = "22px";
+                    btnEditar.style.marginRight = "5px";
+                    btnEditar.id = "btn-editarProduto";
+                    btnEditar.onclick = () => abrirModalProduto(produto);
+
+                    const btnExcluir = document.createElement("img");
+                    btnExcluir.src = "../../assets/trash.png";
+                    btnExcluir.alt = "Excluir";
+                    btnExcluir.style.cursor = "pointer";
+                    btnExcluir.style.width = "24px";
+                    btnExcluir.style.height = "24px";
+                    btnExcluir.id = "btn-excluirProduto";
+                    btnExcluir.onclick = () =>
+                      removerProdutoComprado(produto?.id);
+
+                    containerBotoes.appendChild(btnEditar);
+                    containerBotoes.appendChild(btnExcluir);
+                    divProduto.appendChild(containerBotoes);
+                  }
 
                   produtosContainer.appendChild(divProduto);
-
-                  totalGeral += quantidade * preco;
                 });
               }
             } else {
@@ -243,8 +275,52 @@ document.addEventListener("DOMContentLoaded", async () => {
             listaUsuariosPagantes.splice(index, 1);
             preencherPagantesEdicao();
           };
-
           div.appendChild(btnExcluir);
+
+          const btnEditar = document.createElement("span");
+          btnEditar.textContent = "✏️";
+          btnEditar.style.cursor = "pointer";
+          btnEditar.style.marginRight = "10px";
+          btnEditar.style.marginBottom = "3px";
+
+          const editarNomePagante = (pagante) => {
+            const novoNome = prompt(
+              "Digite o novo nome do pagante:",
+              pagante?.nome
+            );
+
+            const preencheuNome =
+              novoNome !== null && novoNome?.toString()?.trim() !== "";
+
+            const mesmoNome = pagante?.nome === novoNome;
+            if (mesmoNome) {
+              alert("O nome é igual!");
+              return null;
+            }
+
+            if (preencheuNome) {
+              const dados = new URLSearchParams();
+              dados.append("acao", "editar");
+              dados.append("id_pagante", pagante.id);
+              dados.append("novo_nome", novoNome);
+              fetch("../../backend/pagantesEventos.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: dados.toString(),
+              })
+                .then(() => window.location.reload())
+                .catch((error) =>
+                  console.error("Erro ao editar nome do pagante:", error)
+                );
+            }
+          };
+
+          btnEditar.onclick = () => editarNomePagante(pagante);
+
+          div.appendChild(btnEditar);
+
           div.appendChild(document.createTextNode(pagante.nome));
           divPagantesEdicao.appendChild(div);
         });
@@ -261,11 +337,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const estabelecimento = estabelecimentoComponente.value;
         const dataEvento = dataEventoComponente.value;
         const endereco = enderecoComponente.value;
+        const taxaGarcom = porcentagemGarcomComponente.value;
+
+        if (taxaGarcom < 0) {
+          alert("Taxa do garçom não pode ser negativa!");
+          return null;
+        }
 
         let eventoAlterado =
           estabelecimento !== eventoOriginal.nome ||
           dataEvento !== eventoOriginal.data_evento ||
-          endereco !== eventoOriginal.endereco;
+          endereco !== eventoOriginal.endereco ||
+          taxaGarcom !== eventoOriginal?.taxa_garcom;
 
         let pagantesAdicionados =
           pagantes?.filter(
@@ -295,18 +378,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (eventoAlterado) {
           try {
+            const parametrosEdicao = {
+              eventoId,
+              estabelecimento,
+              dataEvento,
+              endereco,
+              taxaGarcom,
+              operacao: "atualizar",
+            };
+
             const respostaUpdateEvento = await fetch(
               `../../backend/eventos.php`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  eventoId,
-                  estabelecimento,
-                  dataEvento,
-                  endereco,
-                  operacao: "atualizar",
-                }),
+                body: JSON.stringify(parametrosEdicao),
               }
             );
 
@@ -321,7 +407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Evento atualizado com sucesso!");
           } catch (error) {
             console.error("Erro ao atualizar o evento:", error);
-            alert("Erro ao atualizar evento. Tente novamente.");
+            alert("Erro ao atualizar evento!");
           }
         }
 
@@ -349,6 +435,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 id_pagante: pagante?.id,
               }),
             });
+
+            removerProdutosPorPagante(pagante?.id);
           } catch (error) {
             console.error("Erro ao remover pagante:", error);
           }
@@ -392,3 +480,10 @@ formAdicionarProduto.addEventListener("submit", async (event) => {
     alert(erro.mensagem);
   }
 });
+
+const removerProdutosPorPagante = async (id_pagante) =>
+  await fetch("../../backend/produtosComprados.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ acao: "remover-por-pagante", id_pagante }),
+  });

@@ -16,7 +16,7 @@ function listarEventos($conn)
         return;
     }
 
-    $stmt = $conn->prepare("SELECT * FROM Evento WHERE fk_id_usuario = ?");
+    $stmt = $conn->prepare("SELECT * FROM evento WHERE fk_id_usuario = ?");
     $stmt->bind_param("i", $fk_id_usuario);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -40,7 +40,7 @@ function obterEvento($conn)
         return;
     }
 
-    $stmt = $conn->prepare("SELECT * FROM Evento WHERE id = ?");
+    $stmt = $conn->prepare("SELECT * FROM evento WHERE id = ?");
     $stmt->bind_param("i", $eventoId);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -61,6 +61,7 @@ function adicionarEvento($conn)
     $nome = $_POST['nome'] ?? '';
     $endereco = $_POST['endereco'] ?? '';
     $data_evento = $_POST['data_evento'] ?? '';
+    $taxa_garcom = $_POST['taxaGarcom'] ?? 0;
     $fk_id_usuario = $_POST['fk_id_usuario'] ?? '';
 
     if (empty($fk_id_usuario)) {
@@ -75,8 +76,8 @@ function adicionarEvento($conn)
         return;
     }
 
-    $stmt = $conn->prepare("INSERT INTO Evento (nome, data_criacao, data_evento, endereco, tem_taxa_garcom, fk_id_usuario) VALUES (?, NOW(), ?, ?, 0, ?)");
-    $stmt->bind_param("sssi", $nome, $data_evento, $endereco, $fk_id_usuario);
+    $stmt = $conn->prepare("INSERT INTO evento (nome, data_criacao, data_evento, endereco, taxa_garcom, fk_id_usuario) VALUES (?, NOW(), ?, ?, ?, ?)");
+    $stmt->bind_param("sssdi", $nome, $data_evento, $endereco, $taxa_garcom, $fk_id_usuario);
 
     if ($stmt->execute()) {
         $eventoId = $stmt->insert_id;
@@ -100,18 +101,36 @@ function deletarEvento($conn)
         return;
     }
 
-    $stmt = $conn->prepare("DELETE FROM Evento WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    // Remover produtos comprados associados aos pagantes do evento
+    $stmtProdutos = $conn->prepare("
+        DELETE pc FROM produto_comprado pc
+        INNER JOIN pagante_evento pe ON pc.id_pagante = pe.id
+        WHERE pe.id_evento = ?
+    ");
+    $stmtProdutos->bind_param("i", $id);
+    $stmtProdutos->execute();
+    $stmtProdutos->close();
 
-    if ($stmt->execute()) {
+    // Remover pagantes associados ao evento
+    $stmtPagantes = $conn->prepare("DELETE FROM pagante_evento WHERE id_evento = ?");
+    $stmtPagantes->bind_param("i", $id);
+    $stmtPagantes->execute();
+    $stmtPagantes->close();
+
+    // Remover o próprio evento
+    $stmtEvento = $conn->prepare("DELETE FROM evento WHERE id = ?");
+    $stmtEvento->bind_param("i", $id);
+
+    if ($stmtEvento->execute()) {
         echo json_encode(['mensagem' => 'Evento deletado com sucesso!']);
     } else {
         http_response_code(500);
         echo json_encode(['mensagem' => 'Erro ao deletar evento!']);
     }
 
-    $stmt->close();
+    $stmtEvento->close();
 }
+
 
 function atualizarEvento($conn)
 {
@@ -120,10 +139,11 @@ function atualizarEvento($conn)
     $nome = $data['estabelecimento'] ?? '';
     $data_evento = $data['dataEvento'] ?? '';
     $endereco = $data['endereco'] ?? '';
+    $taxa_garcom = $data['taxaGarcom'] ?? 0;
 
     if (empty($eventoId)) {
         http_response_code(400);
-        echo json_encode(['mensagem' => 'ID do evento é obrigatório!']);
+        echo json_encode(['mensagem' => 'Evento não identificado!']);
         return;
     }
 
@@ -133,8 +153,8 @@ function atualizarEvento($conn)
         return;
     }
 
-    $stmt = $conn->prepare("UPDATE Evento SET nome = ?, data_evento = ?, endereco = ? WHERE id = ?");
-    $stmt->bind_param("sssi", $nome, $data_evento, $endereco, $eventoId);
+    $stmt = $conn->prepare("UPDATE Evento SET nome = ?, data_evento = ?, endereco = ?, taxa_garcom = ? WHERE id = ?");
+    $stmt->bind_param("sssdi", $nome, $data_evento, $endereco, $taxa_garcom, $eventoId);
 
     if ($stmt->execute()) {
         echo json_encode(['mensagem' => 'Evento atualizado com sucesso!']);
