@@ -70,7 +70,6 @@
                 value=""
                 required
               />
-
               <label for="editarDataEvento">Data do evento:</label>
               <input
                 type="date"
@@ -79,7 +78,6 @@
                 value=""
                 required
               />
-
               <label for="editarEndereco">Endereço:</label>
               <input
                 type="text"
@@ -123,53 +121,48 @@
             </form>
           </div>
         </div>
-        <!-- Modal para adicionar produto -->
         <div id="modalProdutoForm" class="modal">
           <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Adicionar produto</h2>
+            <h2 id="titulo-modalProduto"></h2>
             <form id="formAdicionarProduto">
+              <input type="hidden" id="idProduto" name="idProduto" />
               <label for="nomeProduto">Nome:</label>
               <input
                 type="text"
-                id="nomeProduto"
-                name="nomeProduto"
+                id="nome"
+                name="nome"
                 placeholder="Digite o nome do produto"
                 required
               />
-
               <label for="precoProduto">Preço:</label>
               <input
-                type="number"
-                id="precoProduto"
-                name="precoProduto"
+                id="preco"
+                name="preco"
                 placeholder="Digite o preço"
                 required
               />
-
               <label for="quantidadeProduto">Quantidade:</label>
               <input
                 type="number"
-                id="quantidadeProduto"
-                name="quantidadeProduto"
+                id="quantidade"
+                name="quantidade"
                 placeholder="Digite a quantidade"
                 required
               />
-
               <label for="paganteProduto">Pagante:</label>
               <select
                 id="select-listaPagantes"
-                name="paganteProduto"
+                name="id_pagante"
                 required
               ></select>
-
               <button type="submit" id="btnSalvarProduto">Salvar</button>
             </form>
           </div>
         </div>
       </main>
     </div>
-    <script src="../../scripts/comanda.js"></script>
     <script src="../../scripts/base.js"></script>
+    <script src="../../scripts/comanda.js"></script>
   </body>
 </html>
