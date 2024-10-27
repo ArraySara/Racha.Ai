@@ -79,6 +79,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       enderecoComponente.value = evento?.endereco || "N/A";
     }
 
+    const porcentagemGarcomComponente =
+      document.getElementById("campo-taxaGarcom");
+    if (porcentagemGarcomComponente) {
+      porcentagemGarcomComponente.value = evento?.taxa_garcom || 0;
+    }
+
     const divPagantesTela = document.getElementById("lista-pagantes-com-preco");
     if (divPagantesTela) {
       const preencherPagantes = () => {
@@ -132,9 +138,11 @@ document.addEventListener("DOMContentLoaded", async () => {
               const produtos = await response.json();
 
               if (produtos.length === 0) {
-                produtosContainer.innerHTML = `<strong>Sem produtos comprados.</strong>`;
+                produtosContainer.innerHTML = `<strong>Sem produtos comprados!</strong>`;
               } else {
-                produtos.forEach((produto) => {
+                const listaProdutos = [...produtos];
+
+                listaProdutos.forEach((produto) => {
                   produto.id_pagante = pagante?.id;
 
                   const nome = produto?.nome;
@@ -159,33 +167,35 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <br />x${quantidade} = R$ ${total}
                   `;
 
-                  const containerBotoes = document.createElement("div");
+                  if (produto?.eTaxa !== true) {
+                    const containerBotoes = document.createElement("div");
 
-                  const btnEditar = document.createElement("img");
-                  btnEditar.src = "../../assets/pencil.png";
-                  btnEditar.alt = "Editar";
-                  btnEditar.style.cursor = "pointer";
-                  btnEditar.style.width = "22px";
-                  btnEditar.style.height = "22px";
-                  btnEditar.style.marginRight = "5px";
-                  btnEditar.id = "btn-editarProduto";
-                  btnEditar.onclick = () => abrirModalProduto(produto);
+                    const btnEditar = document.createElement("img");
+                    btnEditar.src = "../../assets/pencil.png";
+                    btnEditar.alt = "Editar";
+                    btnEditar.style.cursor = "pointer";
+                    btnEditar.style.width = "22px";
+                    btnEditar.style.height = "22px";
+                    btnEditar.style.marginRight = "5px";
+                    btnEditar.id = "btn-editarProduto";
+                    btnEditar.onclick = () => abrirModalProduto(produto);
 
-                  const btnExcluir = document.createElement("img");
-                  btnExcluir.src = "../../assets/trash.png";
-                  btnExcluir.alt = "Excluir";
-                  btnExcluir.style.cursor = "pointer";
-                  btnExcluir.style.width = "24px";
-                  btnExcluir.style.height = "24px";
-                  btnExcluir.id = "btn-excluirProduto";
-                  btnExcluir.onclick = () =>
-                    removerProdutoComprado(produto?.id);
+                    const btnExcluir = document.createElement("img");
+                    btnExcluir.src = "../../assets/trash.png";
+                    btnExcluir.alt = "Excluir";
+                    btnExcluir.style.cursor = "pointer";
+                    btnExcluir.style.width = "24px";
+                    btnExcluir.style.height = "24px";
+                    btnExcluir.id = "btn-excluirProduto";
+                    btnExcluir.onclick = () =>
+                      removerProdutoComprado(produto?.id);
 
-                  containerBotoes.appendChild(btnEditar);
-                  containerBotoes.appendChild(btnExcluir);
+                    containerBotoes.appendChild(btnEditar);
+                    containerBotoes.appendChild(btnExcluir);
 
-                  divProduto.appendChild(infoProduto);
-                  divProduto.appendChild(containerBotoes);
+                    divProduto.appendChild(infoProduto);
+                    divProduto.appendChild(containerBotoes);
+                  }
 
                   produtosContainer.appendChild(divProduto);
 
@@ -261,11 +271,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const estabelecimento = estabelecimentoComponente.value;
         const dataEvento = dataEventoComponente.value;
         const endereco = enderecoComponente.value;
+        const taxaGarcom = porcentagemGarcomComponente.value;
 
         let eventoAlterado =
           estabelecimento !== eventoOriginal.nome ||
           dataEvento !== eventoOriginal.data_evento ||
-          endereco !== eventoOriginal.endereco;
+          endereco !== eventoOriginal.endereco ||
+          taxaGarcom !== eventoOriginal?.taxa_garcom;
 
         let pagantesAdicionados =
           pagantes?.filter(
@@ -295,18 +307,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (eventoAlterado) {
           try {
+            const parametrosEdicao = {
+              eventoId,
+              estabelecimento,
+              dataEvento,
+              endereco,
+              taxaGarcom,
+              operacao: "atualizar",
+            };
+
             const respostaUpdateEvento = await fetch(
               `../../backend/eventos.php`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  eventoId,
-                  estabelecimento,
-                  dataEvento,
-                  endereco,
-                  operacao: "atualizar",
-                }),
+                body: JSON.stringify(parametrosEdicao),
               }
             );
 
