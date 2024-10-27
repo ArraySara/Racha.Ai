@@ -73,6 +73,13 @@ function editarProduto($conn)
     $nome = $_POST['nome'] ?? '';
     $preco = $_POST['preco'] ?? 0;
     $quantidade = $_POST['quantidade'] ?? 0;
+    $id_pagante = $_POST['id_pagante'] ?? '';
+
+    if (empty($id_pagante)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'Pagante não identificado!']);
+        return;
+    }
 
     if (empty($id) || empty($nome) || $preco < 0 || $quantidade < 0) {
         http_response_code(400);
@@ -82,10 +89,10 @@ function editarProduto($conn)
 
     $stmt = $conn->prepare("
         UPDATE produto_comprado
-        SET nome = ?, preco = ?, quantidade = ?
+        SET nome = ?, preco = ?, quantidade = ?, id_pagante = ?
         WHERE id = ?
     ");
-    $stmt->bind_param("sdii", $nome, $preco, $quantidade, $id);
+    $stmt->bind_param("sdiii", $nome, $preco, $quantidade, $id_pagante, $id);
     if ($stmt->execute()) {
         echo json_encode(['mensagem' => 'Produto editado com sucesso!']);
     } else {

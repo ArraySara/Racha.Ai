@@ -78,6 +78,7 @@ adicionarEventoSeExistir("btn-desconectar", () => {
 });
 
 const abrirModalProduto = (produto = null) => {
+  const campoId = document.getElementById("idProduto");
   const campoNome = document.getElementById("nome");
   const campoPreco = document.getElementById("preco");
   const campoQuantidade = document.getElementById("quantidade");
@@ -88,11 +89,13 @@ const abrirModalProduto = (produto = null) => {
   const acao = editando ? "Editando" : "Criando";
 
   tituloModalProduto.innerText = `${acao} produto`;
+  const idProduto = produto?.id || null;
   const nomeProduto = produto?.nome || "";
   const precoProduto = produto?.preco || "";
   const quantidadeProduto = produto?.quantidade || "";
   const id_paganteProduto = produto?.id_pagante || "";
 
+  campoId.value = idProduto;
   campoNome.value = nomeProduto;
   campoPreco.value = precoProduto;
   campoQuantidade.value = quantidadeProduto;

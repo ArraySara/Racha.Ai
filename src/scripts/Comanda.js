@@ -367,21 +367,20 @@ formAdicionarProduto.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(formAdicionarProduto);
+  const idProduto = formData.get("idProduto");
   const nome = formData.get("nome");
   const preco = parseFloat(formData.get("preco"));
   const quantidade = parseInt(formData.get("quantidade"));
   const id_pagante = Number(formData.get("id_pagante"));
 
+  const acao = idProduto ? "editar" : "criar";
+  let dados = { acao, nome, preco, quantidade, id_pagante };
+  if (idProduto) dados.id = idProduto;
+
   const resposta = await fetch("../../backend/produtosComprados.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      acao: "criar",
-      nome,
-      preco,
-      quantidade,
-      id_pagante,
-    }),
+    body: new URLSearchParams(dados),
   });
 
   if (resposta.ok) {
