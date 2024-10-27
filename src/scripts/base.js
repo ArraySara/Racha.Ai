@@ -219,14 +219,14 @@ const atualizarListaPagantes = () => {
     const btnRemover = document.createElement("span");
     btnRemover.textContent = "🗑️";
     btnRemover.style.cursor = "pointer";
-    btnRemover.style.marginRight = "10px";
+    btnRemover.style.marginRight = "5px";
     btnRemover.style.marginBottom = "3px";
     btnRemover.onclick = () => {
       pagantes.splice(index, 1);
       atualizarListaPagantes();
     };
-
     div.appendChild(btnRemover);
+
     div.appendChild(document.createTextNode(pagante?.nome || pagante));
     listaPagantes.appendChild(div);
   });

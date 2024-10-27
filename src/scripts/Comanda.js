@@ -275,8 +275,52 @@ document.addEventListener("DOMContentLoaded", async () => {
             listaUsuariosPagantes.splice(index, 1);
             preencherPagantesEdicao();
           };
-
           div.appendChild(btnExcluir);
+
+          const btnEditar = document.createElement("span");
+          btnEditar.textContent = "✏️";
+          btnEditar.style.cursor = "pointer";
+          btnEditar.style.marginRight = "10px";
+          btnEditar.style.marginBottom = "3px";
+
+          const editarNomePagante = (pagante) => {
+            const novoNome = prompt(
+              "Digite o novo nome do pagante:",
+              pagante?.nome
+            );
+
+            const preencheuNome =
+              novoNome !== null && novoNome?.toString()?.trim() !== "";
+
+            const mesmoNome = pagante?.nome === novoNome;
+            if (mesmoNome) {
+              alert("O nome é igual!");
+              return null;
+            }
+
+            if (preencheuNome) {
+              const dados = new URLSearchParams();
+              dados.append("acao", "editar");
+              dados.append("id_pagante", pagante.id);
+              dados.append("novo_nome", novoNome);
+              fetch("../../backend/pagantesEventos.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: dados.toString(),
+              })
+                .then(() => window.location.reload())
+                .catch((error) =>
+                  console.error("Erro ao editar nome do pagante:", error)
+                );
+            }
+          };
+
+          btnEditar.onclick = () => editarNomePagante(pagante);
+
+          div.appendChild(btnEditar);
+
           div.appendChild(document.createTextNode(pagante.nome));
           divPagantesEdicao.appendChild(div);
         });
@@ -296,8 +340,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const taxaGarcom = porcentagemGarcomComponente.value;
 
         if (taxaGarcom < 0) {
-          alert('Taxa do garçom não pode ser negativa!')
-          return null
+          alert("Taxa do garçom não pode ser negativa!");
+          return null;
         }
 
         let eventoAlterado =
