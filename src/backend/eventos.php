@@ -100,18 +100,36 @@ function deletarEvento($conn)
         return;
     }
 
-    $stmt = $conn->prepare("DELETE FROM Evento WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    // Remover produtos comprados associados aos pagantes do evento
+    $stmtProdutos = $conn->prepare("
+        DELETE pc FROM produto_comprado pc
+        INNER JOIN pagante_evento pe ON pc.id_pagante = pe.id
+        WHERE pe.id_evento = ?
+    ");
+    $stmtProdutos->bind_param("i", $id);
+    $stmtProdutos->execute();
+    $stmtProdutos->close();
 
-    if ($stmt->execute()) {
+    // Remover pagantes associados ao evento
+    $stmtPagantes = $conn->prepare("DELETE FROM pagante_evento WHERE id_evento = ?");
+    $stmtPagantes->bind_param("i", $id);
+    $stmtPagantes->execute();
+    $stmtPagantes->close();
+
+    // Remover o próprio evento
+    $stmtEvento = $conn->prepare("DELETE FROM evento WHERE id = ?");
+    $stmtEvento->bind_param("i", $id);
+
+    if ($stmtEvento->execute()) {
         echo json_encode(['mensagem' => 'Evento deletado com sucesso!']);
     } else {
         http_response_code(500);
         echo json_encode(['mensagem' => 'Erro ao deletar evento!']);
     }
 
-    $stmt->close();
+    $stmtEvento->close();
 }
+
 
 function atualizarEvento($conn)
 {
