@@ -65,9 +65,6 @@ adicionarEventoSeExistir("btn-abrirModalCriarEvento", () =>
 adicionarEventoSeExistir("btn-abrirModalEditarEvento", () =>
   abrirModal(modalEditarEvento)
 );
-adicionarEventoSeExistir("btn-abrirModalForm", () =>
-  abrirModal(modalProdutoForm)
-);
 adicionarEventoSeExistir("btn-creditos", () =>
   mudarTela("../creditos/Creditos.html")
 );
@@ -79,6 +76,36 @@ adicionarEventoSeExistir("btn-desconectar", () => {
   localStorage.removeItem("usuario");
   window.location.href = "../usuario/Login.html";
 });
+
+const abrirModalProduto = (produto = null) => {
+  if (produto) {
+    document.getElementById("nomeProduto").value = produto.nome;
+    document.getElementById("precoProduto").value = produto.preco
+      .toFixed(2)
+      .replace(".", ",");
+    document.getElementById("quantidadeProduto").value = produto.quantidade;
+    document.querySelector("#formAdicionarProduto input[name='action']").value =
+      "editar";
+    document.querySelector("#formAdicionarProduto input[name='id']").value =
+      produto.id;
+  } else {
+    document.getElementById("nome").value = "";
+    document.getElementById("preco").value = "";
+    document.getElementById("quantidade").value = "";
+
+    const campo = document.querySelector(
+      "#formAdicionarProduto input[name='action']"
+    );
+
+    if (campo) {
+      campo.value = "criar";
+    }
+
+    delete document.querySelector("#formAdicionarProduto input[name='id']");
+  }
+  abrirModal(modalProdutoForm);
+};
+adicionarEventoSeExistir("btn-abrirModalForm", () => abrirModalProduto());
 
 const manterOpcoesAbertas = () => {
   clearTimeout(timer);

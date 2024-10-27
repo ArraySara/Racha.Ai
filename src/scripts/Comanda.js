@@ -307,3 +307,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     alert("Erro ao buscar informações do evento. Tente novamente.");
   }
 });
+
+const formAdicionarProduto = document.getElementById("formAdicionarProduto");
+formAdicionarProduto.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(formAdicionarProduto);
+  const nome = formData.get("nome");
+  const preco = parseFloat(formData.get("preco"));
+  const quantidade = parseInt(formData.get("quantidade"));
+  const id_pagante = Number(formData.get("id_pagante"));
+
+  const resposta = await fetch("../../backend/produtosComprados.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      acao: "criar",
+      nome,
+      preco,
+      quantidade,
+      id_pagante,
+    }),
+  });
+
+  if (resposta.ok) {
+    const resultado = await resposta.json();
+    alert(resultado.mensagem);
+    window.location.reload();
+  } else {
+    const erro = await resposta.json();
+    alert(erro.mensagem);
+  }
+});
