@@ -154,7 +154,7 @@ function atualizarEvento($conn)
     }
 
     $stmt = $conn->prepare("UPDATE Evento SET nome = ?, data_evento = ?, endereco = ?, taxa_garcom = ? WHERE id = ?");
-    $stmt->bind_param("sssddi", $nome, $data_evento, $endereco, $taxa_garcom, $eventoId);
+    $stmt->bind_param("sssdi", $nome, $data_evento, $endereco, $taxa_garcom, $eventoId);
 
     if ($stmt->execute()) {
         echo json_encode(['mensagem' => 'Evento atualizado com sucesso!']);

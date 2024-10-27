@@ -137,16 +137,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok) {
               const produtos = await response.json();
 
+              const listaProdutos = [...produtos];
+              totalGeral = produtos?.reduce((total, produto) => {
+                const quantidade = produto.quantidade || 1;
+                return total + quantidade * produto.preco;
+              }, 0);
+
+              const taxaGarcomInformada = evento?.taxa_garcom;
+              const temTaxaGarcom =
+                taxaGarcomInformada && taxaGarcomInformada > 0;
+
+              if (temTaxaGarcom) {
+                const porcentagemTaxaGarcom = taxaGarcomInformada / 100;
+                const taxaGarcom = totalGeral * porcentagemTaxaGarcom;
+                listaProdutos.push({
+                  nome: `Taxa do garçom (${taxaGarcomInformada}%)`,
+                  preco: taxaGarcom,
+                  eTaxa: true,
+                });
+
+                totalGeral += taxaGarcom;
+              }
+
               if (produtos.length === 0) {
                 produtosContainer.innerHTML = `<strong>Sem produtos comprados!</strong>`;
               } else {
-                const listaProdutos = [...produtos];
-
                 listaProdutos.forEach((produto) => {
+                  const eTaxa = produto?.eTaxa === true;
                   produto.id_pagante = pagante?.id;
 
                   const nome = produto?.nome;
-                  const quantidade = produto?.quantidade;
+                  const quantidade = produto?.quantidade || 1;
                   const preco = produto?.preco;
                   const precoEmReal = preco?.toFixed(2)?.replace(".", ",");
                   const total = (quantidade * preco)
@@ -162,12 +183,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                   divProduto.style.alignItems = "center";
 
                   const infoProduto = document.createElement("div");
+                  const valorComQuantidades = eTaxa
+                    ? ""
+                    : `<br />x${quantidade} = R$ ${total}`;
+
                   infoProduto.innerHTML = `
                     <strong>${nome}</strong> - R$ ${precoEmReal}
-                    <br />x${quantidade} = R$ ${total}
-                  `;
+                    ${valorComQuantidades}
+                    `;
 
-                  if (produto?.eTaxa !== true) {
+                  divProduto.appendChild(infoProduto);
+                  if (!eTaxa) {
                     const containerBotoes = document.createElement("div");
 
                     const btnEditar = document.createElement("img");
@@ -192,14 +218,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     containerBotoes.appendChild(btnEditar);
                     containerBotoes.appendChild(btnExcluir);
-
-                    divProduto.appendChild(infoProduto);
                     divProduto.appendChild(containerBotoes);
                   }
 
                   produtosContainer.appendChild(divProduto);
-
-                  totalGeral += quantidade * preco;
                 });
               }
             } else {
@@ -273,6 +295,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const endereco = enderecoComponente.value;
         const taxaGarcom = porcentagemGarcomComponente.value;
 
+        if (taxaGarcom < 0) {
+          alert('Taxa do garçom não pode ser negativa!')
+          return null
+        }
+
         let eventoAlterado =
           estabelecimento !== eventoOriginal.nome ||
           dataEvento !== eventoOriginal.data_evento ||
@@ -336,7 +363,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Evento atualizado com sucesso!");
           } catch (error) {
             console.error("Erro ao atualizar o evento:", error);
-            alert("Erro ao atualizar evento. Tente novamente.");
+            alert("Erro ao atualizar evento!");
           }
         }
 
