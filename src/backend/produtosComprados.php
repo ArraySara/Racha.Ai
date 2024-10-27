@@ -123,6 +123,29 @@ function removerProduto($conn)
     $stmt->close();
 }
 
+function removerProdutosPorPagante($conn)
+{
+    $id_pagante = $_POST['id_pagante'] ?? '';
+
+    if (empty($id_pagante)) {
+        http_response_code(400);
+        echo json_encode(['mensagem' => 'Pagante não identificado!']);
+        return;
+    }
+
+    $stmt = $conn->prepare("DELETE FROM produto_comprado WHERE id_pagante = ?");
+    $stmt->bind_param("i", $id_pagante);
+
+    if ($stmt->execute()) {
+        echo json_encode(['mensagem' => 'Todos os produtos foram removidos com sucesso!']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['mensagem' => 'Erro ao remover os produtos!']);
+    }
+
+    $stmt->close();
+}
+
 switch ($metodo) {
     case 'GET':
         listarProdutosComprados($conn);
@@ -138,6 +161,9 @@ switch ($metodo) {
                     break;
                 case 'remover':
                     removerProduto($conn);
+                    break;
+                case 'remover-por-pagante':
+                    removerProdutosPorPagante($conn);
                     break;
                 default:
                     http_response_code(400);

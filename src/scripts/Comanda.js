@@ -349,6 +349,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 id_pagante: pagante?.id,
               }),
             });
+
+            removerProdutosPorPagante(pagante?.id);
           } catch (error) {
             console.error("Erro ao remover pagante:", error);
           }
@@ -392,3 +394,10 @@ formAdicionarProduto.addEventListener("submit", async (event) => {
     alert(erro.mensagem);
   }
 });
+
+const removerProdutosPorPagante = async (id_pagante) =>
+  await fetch("../../backend/produtosComprados.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ acao: "remover-por-pagante", id_pagante }),
+  });
