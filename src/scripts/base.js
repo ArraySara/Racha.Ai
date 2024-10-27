@@ -78,31 +78,25 @@ adicionarEventoSeExistir("btn-desconectar", () => {
 });
 
 const abrirModalProduto = (produto = null) => {
-  if (produto) {
-    document.getElementById("nomeProduto").value = produto.nome;
-    document.getElementById("precoProduto").value = produto.preco
-      .toFixed(2)
-      .replace(".", ",");
-    document.getElementById("quantidadeProduto").value = produto.quantidade;
-    document.querySelector("#formAdicionarProduto input[name='action']").value =
-      "editar";
-    document.querySelector("#formAdicionarProduto input[name='id']").value =
-      produto.id;
-  } else {
-    document.getElementById("nome").value = "";
-    document.getElementById("preco").value = "";
-    document.getElementById("quantidade").value = "";
+  const campoNome = document.getElementById("nome");
+  const campoPreco = document.getElementById("preco");
+  const campoQuantidade = document.getElementById("quantidade");
+  const selectListaPagantes = document.getElementById("select-listaPagantes");
+  const tituloModalProduto = document.getElementById("titulo-modalProduto");
 
-    const campo = document.querySelector(
-      "#formAdicionarProduto input[name='action']"
-    );
+  const editando = produto?.id;
+  const acao = editando ? "Editando" : "Criando";
 
-    if (campo) {
-      campo.value = "criar";
-    }
+  tituloModalProduto.innerText = `${acao} produto`;
+  const nomeProduto = produto?.nome || "";
+  const precoProduto = produto?.preco || "";
+  const quantidadeProduto = produto?.quantidade || "";
+  const id_paganteProduto = produto?.id_pagante || "";
 
-    delete document.querySelector("#formAdicionarProduto input[name='id']");
-  }
+  campoNome.value = nomeProduto;
+  campoPreco.value = precoProduto;
+  campoQuantidade.value = quantidadeProduto;
+  selectListaPagantes.value = id_paganteProduto;
   abrirModal(modalProdutoForm);
 };
 adicionarEventoSeExistir("btn-abrirModalForm", () => abrirModalProduto());

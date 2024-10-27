@@ -1,3 +1,19 @@
+const removerProdutoComprado = async (id) => {
+  try {
+    const response = await fetch("../../backend/produtosComprados.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ acao: "remover", id }),
+    });
+
+    if (!response.ok) throw new Error("Erro ao remover produto!");
+    window.location.reload();
+  } catch (error) {
+    console.error("Erro ao remover produto:", error);
+    alert("Erro ao remover produto. Tente novamente!");
+  }
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const eventoId = urlParams?.get("eventoId");
@@ -96,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             detalhes.style.marginBottom = "15px";
             detalhes.style.borderLeft = "2px solid #4caf50";
             detalhes.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-            detalhes.style.color = "#FFFFFF";
+            detalhes.style.backgroundColor = "#ffffff";
             detalhes.className = "detalhes";
 
             const produtosContainer = document.createElement("div");
@@ -114,29 +130,67 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok) {
               const produtos = await response.json();
+
               if (produtos.length === 0) {
                 produtosContainer.innerHTML = `<strong>Sem produtos comprados.</strong>`;
               } else {
-                let html = "";
-                produtos.forEach((produto, index) => {
-                  const nome = produto.nome;
-                  const quantidade = produto.quantidade;
-                  const preco = produto.preco.toFixed(2).replace(".", ",");
-                  const total = (quantidade * produto.preco)
+                produtos.forEach((produto) => {
+                  produto.id_pagante = pagante?.id;
+
+                  const nome = produto?.nome;
+                  const quantidade = produto?.quantidade;
+                  const preco = produto?.preco;
+                  const precoEmReal = preco?.toFixed(2)?.replace(".", ",");
+                  const total = (quantidade * preco)
                     .toFixed(2)
                     .replace(".", ",");
 
-                  html += `<strong>${nome}</strong> - R$ ${preco}`;
-                  html += ` <br />x${quantidade} = R$ ${total}`;
+                  const divProduto = document.createElement("div");
+                  divProduto.style.border = "1px dashed #ccc";
+                  divProduto.style.margin = "5px 0";
+                  divProduto.style.padding = "10px";
+                  divProduto.style.display = "flex";
+                  divProduto.style.justifyContent = "space-between";
+                  divProduto.style.alignItems = "center";
 
-                  if (index < produtos.length - 1) {
-                    html += `<br /><br />`;
-                  }
+                  const infoProduto = document.createElement("div");
+                  infoProduto.innerHTML = `
+                    <strong>${nome}</strong> - R$ ${precoEmReal}
+                    <br />x${quantidade} = R$ ${total}
+                  `;
 
-                  totalGeral += quantidade * produto.preco;
+                  const containerBotoes = document.createElement("div");
+
+                  const btnEditar = document.createElement("img");
+                  btnEditar.src = "../../assets/pencil.png";
+                  btnEditar.alt = "Editar";
+                  btnEditar.style.cursor = "pointer";
+                  btnEditar.style.width = "22px";
+                  btnEditar.style.height = "22px";
+                  btnEditar.style.marginRight = "5px";
+                  btnEditar.id = "btn-editarProduto";
+                  btnEditar.onclick = () => abrirModalProduto(produto);
+
+                  const btnExcluir = document.createElement("img");
+                  btnExcluir.src = "../../assets/trash.png";
+                  btnExcluir.alt = "Excluir";
+                  btnExcluir.style.cursor = "pointer";
+                  btnExcluir.style.width = "24px";
+                  btnExcluir.style.height = "24px";
+                  btnExcluir.id = "btn-excluirProduto";
+                  btnExcluir.onclick = () =>
+                    removerProdutoComprado(produto?.id);
+
+                  containerBotoes.appendChild(btnEditar);
+                  containerBotoes.appendChild(btnExcluir);
+
+                  divProduto.appendChild(infoProduto);
+                  divProduto.appendChild(containerBotoes);
+
+                  produtosContainer.appendChild(divProduto);
+
+                  totalGeral += quantidade * preco;
                 });
-
-                produtosContainer.innerHTML = html;
               }
             } else {
               produtosContainer.innerHTML = `<strong>Erro ao carregar produtos.</strong>`;
@@ -146,8 +200,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const totalContainer = document.createElement("div");
             totalContainer.innerHTML = `<strong>Total: R$ ${totalGeral
-              .toFixed(2)
-              .replace(".", ",")}</strong>`;
+              ?.toFixed(2)
+              ?.replace(".", ",")}</strong>`;
             detalhes.appendChild(totalContainer);
 
             const jaTemPaganteComDetalhe =

@@ -101,7 +101,7 @@ function removerProduto($conn)
 
     if (empty($id)) {
         http_response_code(400);
-        echo json_encode(['mensagem' => 'ID do produto não identificado!']);
+        echo json_encode(['mensagem' => 'Produto não identificado!']);
         return;
     }
 
