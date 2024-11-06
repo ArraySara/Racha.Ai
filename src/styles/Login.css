@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #e9f5e1;
+    background-color: #4CAF50;
 }
 
 .container {
@@ -11,8 +11,8 @@ body {
 }
 
 .login {
-    background-color: #72b445;
-    width: 40%;
+    background-color: #4CAF50;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,9 +21,10 @@ body {
 }
 
 .login img {
-    width: 100px;
+    margin-bottom: -25px;
+    z-index: 3;
+    width: 105px;
     height: auto;
-    margin-bottom: 20px;
 }
 
 .login h2 {
@@ -34,26 +35,31 @@ body {
 .login form {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 55%;
+    gap: 2px;
+    background-color: white;
+    padding: 22px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .login label {
-    color: white;
-    margin-bottom: 5px;
+    font-size: 18px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    display: block;
 }
 
 .login input {
-    margin-bottom: 15px;
     padding: 10px;
+    margin-bottom: 15px;
     border-radius: 5px;
-    border: none;
-    outline: none;
-    font-size: 16px;
+    border: 1px solid #ccc;
 }
 
 .login button {
     padding: 10px;
-    background-color: #4d8b2d;
+    background-color: #4CAF50;
     color: white;
     font-size: 18px;
     border: none;
@@ -61,10 +67,21 @@ body {
     cursor: pointer;
 }
 
+.login button:hover {
+    background-color: #218838;
+}
+
+
 .login a {
-    color: white;
+    color: rgb(0, 0, 0);
     text-align: center;
     margin-top: 10px;
+}
+
+.poppins-extrabold {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
 }
 
 .welcome {
@@ -78,15 +95,26 @@ body {
 }
 
 .welcome h1 {
-    font-size: 36px;
+    font-size: 38px;
     color: #333;
     margin-bottom: 20px;
 }
 
-.welcome img {
-    width: 300px;
-    height: auto;
+.welcome h1::before {
+    position: absolute;
+    content: '';
+    width: 15%;
+    background-color: #4CAF50;
+    height: 5px;
+    margin-top: 50px;
+    border-radius: 10px;
 }
+
+.welcome img {
+    max-width: 70%;
+    
+}
+
 .button-link {
     display: inline-block;
     padding: 10px 20px;
@@ -99,4 +127,46 @@ body {
 
 .button-link:hover {
     background-color: #218838;
+}
+
+
+@media (max-width: 600px) {
+    .welcome {
+        background-color: #4CAF50;
+    }
+
+    .welcome h1 {
+        display: none;
+    }
+
+    .welcome img {
+        display: none;
+    }
+
+    .login {
+        background-color: #4CAF50;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .login form {
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        gap: 2px;
+        background-color: white;
+        padding: 22px;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    body{
+        display: flex;
+        justify-content: center;
+    }
+
 }
