@@ -3,60 +3,61 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #6EB043;
+    background-color: #6eb043;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-/* Container central */
-.container {
+  }
+  
+  /* Container central */
+  .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
-}
-
-.form-box {
+  }
+  
+  .form-box {
     background-color: white;
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 320px;
-}
-
-/* Estilo da logo */
-.logo {
+    max-width: 90%; /* Limita o tamanho em telas menores */
+  }
+  
+  /* Estilo da logo */
+  .logo {
     width: 80px;
     margin-bottom: 20px;
-}
-
-/* Grupo de inputs */
-.input-group {
+  }
+  
+  /* Grupo de inputs */
+  .input-group {
     margin-bottom: 20px;
     text-align: left;
-}
-
-.input-group label {
+  }
+  
+  .input-group label {
     font-size: 14px;
     color: #333;
-}
-
-.input-group input {
+  }
+  
+  .input-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-top: 5px;
     box-sizing: border-box;
-}
-
-/* Botão de criar conta */
-.btn {
-    background-color: #4CAF50;
+  }
+  
+  /* Botão de criar conta */
+  .btn {
+    background-color: #4caf50;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -64,22 +65,60 @@ body {
     cursor: pointer;
     width: 100%;
     font-size: 16px;
-}
-
-.btn:hover {
+  }
+  
+  .btn:hover {
     background-color: #45a049;
-}
-
-/* Estilo do link para login */
-.link-box {
+  }
+  
+  /* Estilo do link para login */
+  .link-box {
     margin-top: 20px;
-}
-
-.link-box a {
-    color: #4CAF50;
+  }
+  
+  .link-box a {
+    color: #4caf50;
     text-decoration: none;
-}
-
-.link-box a:hover {
+  }
+  
+  .link-box a:hover {
     text-decoration: underline;
-}
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .form-box {
+      width: 80%;
+      padding: 20px;
+    }
+  
+    .btn {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  
+    .input-group label {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-box {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .logo {
+      width: 60px;
+    }
+  
+    .btn {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .input-group input {
+      padding: 8px;
+    }
+  }
+  
