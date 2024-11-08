@@ -135,18 +135,39 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  text-align: center;
   width: 100%;
 }
 
 .pessoa {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px;
+  position: relative;
+  width: 120px;
   height: 120px;
-  width: 100px;
+  margin: 5px;
   text-align: center;
+}
+
+.pessoa .logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  border-radius: 10px;
+}
+
+.pessoa .overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 10px 10px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .modal {
@@ -313,13 +334,5 @@ body {
 
   .aba-lateral.aberta {
     left: 0;
-  }
-
-  .pessoa {
-    margin-top: 30px;
-  }
-
-  .grupo-pessoas {
-    margin-top: 80px;
   }
 }
