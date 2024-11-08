@@ -146,17 +146,20 @@ if (opcoesFab) {
       fabAberto = false;
     }, 400);
   });
-}
 
-document.addEventListener("mouseout", (event) => {
-  if (!opcoesFab.contains(event.relatedTarget) && event.target !== botaoFab) {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      opcoesFab.classList.remove("fab-visivel");
-      fabAberto = false;
-    }, 400);
-  }
-});
+  document.addEventListener("mouseout", (event) => {
+    const temOpcoesVisiveis =
+      !opcoesFab?.contains(event.relatedTarget) && event.target !== botaoFab;
+
+    if (temOpcoesVisiveis) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        opcoesFab.classList.remove("fab-visivel");
+        fabAberto = false;
+      }, 400);
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
