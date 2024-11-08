@@ -246,3 +246,21 @@ if (btnAdicionarPagante) {
     document.getElementById("nomePagante").value = "";
   });
 }
+
+const menuAbaLateral = document.getElementById("menu-icon");
+if (menuAbaLateral) {
+  menuAbaLateral.addEventListener("click", function () {
+    const sidebar = document.getElementsByClassName("aba-lateral")[0];
+    const menuIcon = document.getElementById("menu-icon");
+
+    // Alterna a classe "aberta" para mostrar ou ocultar a aba lateral
+    sidebar.classList.toggle("aberta");
+
+    // Altera o ícone para "X" quando a aba está aberta e "☰" quando está fechada
+    if (sidebar.classList.contains("aberta")) {
+      menuIcon.textContent = "X";
+    } else {
+      menuIcon.textContent = "☰";
+    }
+  });
+}

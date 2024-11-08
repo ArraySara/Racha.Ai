@@ -1,13 +1,22 @@
+/* Contêiner da tabela para rolagem horizontal e limite de altura */
+.event-list-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 80vh; /* Limite de altura de 90% da altura da tela */
+  -webkit-overflow-scrolling: touch; /* Melhor rolagem em dispositivos móveis */
+}
+
+/* Estilos principais da tabela */
 .event-list {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  margin-top: 20px; /* Adicionar margem entre o título e a tabela */
 }
 
+/* Outros estilos continuam os mesmos */
 .event-list th,
 .event-list td {
-  padding: 12px; /* Ajuste de padding */
+  padding: 12px;
   text-align: left;
   border: 1px solid #ddd;
 }
@@ -15,6 +24,9 @@
 .event-list th {
   background-color: #4caf50;
   color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .event-list td {
@@ -22,33 +34,32 @@
 }
 
 .event-list td:last-child {
-  text-align: center; /* Alinhar o conteúdo ao centro da célula */
+  text-align: center;
   display: flex;
-  justify-content: center; /* Centraliza os ícones horizontalmente */
-  align-items: center; /* Centraliza os ícones verticalmente */
-  gap: 10px; /* Espaçamento entre os ícones */
-  height: 100%; /* Garante que o flexbox ocupe toda a altura da célula */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
 }
+
 .event-list .action-icons {
-  margin-left: 10px; /* Espaçamento entre os ícones */
-  width: 20px; /* Ajustar tamanho dos ícones */
+  width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.event-list .edit-icon {
+.edit-icon {
   color: #ffc107;
 }
 
-.event-list .delete-icon {
+.delete-icon {
   color: #f44336;
 }
-.action-icons {
-  width: 24px; /* Ajuste o tamanho do ícone */
-  height: 24px;
-  cursor: pointer;
-}
 
-.edit-icon {
-  margin-right: 10px; /* Espaçamento entre os ícones */
+/* Responsividade para dispositivos menores */
+@media (max-width: 768px) {
+  .event-list {
+    min-width: 600px;
+    table-layout: auto;
+  }
 }

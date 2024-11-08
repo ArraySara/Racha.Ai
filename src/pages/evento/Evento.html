@@ -18,6 +18,7 @@
           </button>
         </div>
       </div>
+      <span class="menu-icon" id="menu-icon">☰</span>
       <aside class="aba-lateral">
         <div class="topo-lateral">
           <div class="user-info">
@@ -108,17 +109,19 @@
       </div>
       <main class="conteudo-principal">
         <h1>Lista de eventos</h1>
-        <table class="event-list">
-          <thead>
-            <tr>
-              <th>Estabelecimento</th>
-              <th>Endereço</th>
-              <th>Data</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="event-body"></tbody>
-        </table>
+        <div class="event-list-container">
+          <table class="event-list">
+            <thead>
+              <tr>
+                <th>Estabelecimento</th>
+                <th>Endereço</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="event-body"></tbody>
+          </table>
+        </div>
       </main>
     </div>
     <script src="../../scripts/base.js"></script>

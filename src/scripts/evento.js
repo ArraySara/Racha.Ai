@@ -28,10 +28,12 @@ const mostrarEventos = (eventos) => {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${event.nome}</td>
-      <td>${event.endereco || "N/A"}</td>
-      <td>${new Date(event.data_evento).toLocaleDateString("pt-BR")}</td>
-      <td>
+      <td data-label="Estabelecimento">${event.nome}</td>
+      <td data-label="Endereço">${event.endereco || "N/A"}</td>
+      <td data-label="Data">${new Date(event.data_evento).toLocaleDateString(
+        "pt-BR"
+      )}</td>
+      <td data-label="Ações">
         <img src="../../assets/pencil.png" alt="Editar" class="action-icons edit-icon">
         <img src="../../assets/trash.png" alt="Excluir" class="action-icons delete-icon">
       </td>
