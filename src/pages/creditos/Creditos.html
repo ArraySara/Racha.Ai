@@ -3,101 +3,100 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Eventos - Racha.Aí</title>
-    <link rel="stylesheet" href="../../styles/Creditos.css" />
-    <link rel="stylesheet" href="../../styles/Evento.css" />
+    <title>Créditos - Racha.Aí</title>
+    <link rel="stylesheet" href="../../styles/base.css" />
+    <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <div class="container">
-      <aside class="sidebar">
-        <div class="user-info">
-          <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
-          <h2>Adrielly Menezes</h2>
-          <a href="#" class="logout">Desconectar</a>
+      <span class="menu-icon" id="menu-icon">☰</span>
+      <aside class="aba-lateral">
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div style="margin-left: 10px">
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="btn-desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
+            </div>
+          </div>
         </div>
         <nav class="menu">
           <ul>
-            <li><a href="../../pages/evento/Evento.html">Listar eventos</a></li>
             <li>
-              <a href="../../pages/comanda/Comanda.html">Criar evento</a></li>
+              <button id="btn-listarEvento">Listar eventos</button>
             </li>
-            <li><a href="../../pages/creditos/Creditos.html">Créditos</a></li>
             <li>
-              <a href="../../pages/feedbacks/Feedbacks.html">Feedbacks</a>
+              <button id="btn-creditos">Créditos</button>
+            </li>
+            <li>
+              <button id="btn-feedback">Feedbacks</button>
             </li>
           </ul>
         </nav>
       </aside>
-
-      <main class="content">
+      <main class="conteudo-principal">
         <h1>Créditos</h1>
         <div class="canva">
-          <div class="grupo">
+          <div class="grupo-pessoas">
             <div class="pessoa">
               <img
                 class="logo"
-                src="../../assets/logo.png"
-                alt="Logo Racha.Aí"
+                src="../../assets/adrielly.jpg"
+                alt="Adrielly"
               />
-              <p>Adrielly</p>
+              <div class="overlay">Adrielly Oliveira</div>
+            </div>
+            <div class="pessoa">
+              <img class="logo" src="../../assets/jamille.jpg" alt="Jamille" />
+              <div class="overlay">Maria Jamille</div>
+            </div>
+            <div class="pessoa">
+              <img class="logo" src="../../assets/lia.jpg" alt="Lia" />
+              <div class="overlay">Sara Silva Souza</div>
             </div>
             <div class="pessoa">
               <img
                 class="logo"
-                src="../../assets/logo.png"
-                alt="Logo Racha.Aí"
+                src="../../assets/sara.jpg"
+                alt="Sara Lourenço"
+                style="object-position: middle;"
               />
-              <p>Jamille</p>
-            </div>
-            <div class="pessoa">
-              <img
-                class="logo"
-                src="../../assets/logo.png"
-                alt="Logo Racha.Aí"
-              />
-              <p>Sara Sousa</p>
-            </div>
-            <div class="pessoa">
-              <img
-                class="logo"
-                src="../../assets/logo.png"
-                alt="Logo Racha.Aí"
-              />
-              <p>Sara Lourenço</p>
-            </div>
-            <div class="pessoa">
-              <img
-                class="logo"
-                src="../../assets/logo.png"
-                alt="Logo Racha.Aí"
-              />
-              <p>Victor Hugo</p>
+              <div class="overlay">Sara Lourenço</div>
             </div>
           </div>
-          <span>
+          <span style="margin-top: 30px; overflow-y: auto">
+            <p>Olá! Somos nós, as mentes (e mãos) por trás do Racha.Aí! 🙋‍♀️✨</p>
+            <br />
             <p>
-              A sua opinião é fundamental para nós! Estamos sempre em busca de
-              melhorias para o Racha.Aí, e suas ideias podem fazer toda a
-              diferença. Se você tiver sugestões, encontrou algum problema ou
-              gostaria de compartilhar suas experiências, adoraríamos ouvir de
-              você.
+              Cada uma de nós trouxe um pouquinho de si para esse projeto, com o
+              objetivo de facilitar a vida de todo mundo que adora um rolê
+              organizado. 🤝🎉
             </p>
             <br />
             <p>
-              Por favor, envie seu feedback para o e-mail:<br />
-              <strong>emailveridico@gmail.com</strong>
+              Desde o design até o código, criamos tudo com carinho para ajudar
+              vocês a dividir os produtos entre os participantes dos eventos e
+              deixar cada encontro mais fácil de planejar. Queremos que o
+              Racha.Aí ajude a galera a focar no que importa: curtir o evento
+              com os amigos! 🍻🍕
             </p>
             <br />
             <p>
-              Juntos, podemos tornar o Racha.Aí uma ferramenta ainda mais
-              incrível e útil para todos! Agradecemos desde já sua colaboração e
-              apoio!
+              Muito obrigada a todos vocês que nos deram apoio, ideias e aquele
+              feedback amigo que faz toda a diferença. Com vocês, seguimos
+              aprimorando o Racha.Aí para ser uma ferramenta cada vez mais útil
+              e divertida! ❤️🚀
             </p>
           </span>
         </div>
       </main>
     </div>
-
-    <script src="../../scripts/Feedbacks.js"></script>
+    <script src="../../scripts/base.js"></script>
   </body>
 </html>

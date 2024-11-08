@@ -1,47 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Eventos - Racha.Aí</title>
-    <link rel="stylesheet" href="../../styles/Evento.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../../styles/evento.css" />
+    <link rel="stylesheet" href="../../styles/base.css" />
+    <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
     <div class="container">
-        <aside class="sidebar">
-            <div class="user-info">
-                <img src="../../assets/logo.png" alt="Logo Racha.Aí">
-                <h2>Adrielly Menezes</h2>
-                <a href="#" class="logout">Desconectar</a>
+      <div class="container-fab">
+        <button id="botao-fab">+</button>
+        <div id="opcoes-fab" style="display: none">
+          <button class="opcao-fab" id="btn-abrirModalCriarEvento">
+            Criar evento
+          </button>
+        </div>
+      </div>
+      <span class="menu-icon" id="menu-icon">☰</span>
+      <aside class="aba-lateral">
+        <div class="topo-lateral">
+          <div class="user-info">
+            <img class="logo" src="../../assets/logo.png" alt="Logo Racha.Aí" />
+            <div style="margin-left: 10px">
+              <h2 id="nome-usuario"></h2>
+              <button type="button" id="btn-desconectar">
+                <img
+                  class="icone-desconectar"
+                  src="../../assets/sair.png"
+                  alt="Imagem de desconectar"
+                />Desconectar
+              </button>
             </div>
-            <nav class="menu">
-                <ul>
-                    <li><a href="../../pages/evento/Evento.html">Listar eventos</a></li>
-                    <li><a href="../../pages/comanda/Comanda.html">Criar evento</a></li>
-                    <li><a href="../../pages/creditos/Creditos.html">Créditos</a></li>
-                    <li><a href="../../pages/feedbacks/Feedbacks.html">Feedbacks</a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="content">
-            <h1>Lista de eventos</h1>
-            <table class="event-list">
-                <thead>
-                    <tr>
-                        <th>Estabelecimento</th>
-                        <th>Endereço</th>
-                        <th>Data</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="event-body">
-                    <!-- Conteúdo inserido dinamicamente via JS -->
-                </tbody>
-            </table>
-        </main>
+          </div>
+        </div>
+        <nav class="menu">
+          <ul>
+            <li>
+              <button id="btn-listarEvento">Listar eventos</button>
+            </li>
+            <li>
+              <button id="btn-creditos">Créditos</button>
+            </li>
+            <li>
+              <button id="btn-feedback">Feedbacks</button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <div id="modalCriarEvento" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Criar novo evento</h2>
+          <form id="formCriarEvento">
+            <label for="estabelecimento">Estabelecimento:</label>
+            <input
+              type="text"
+              id="estabelecimento"
+              name="estabelecimento"
+              required
+            />
+            <label for="dataEvento">Data do evento:</label>
+            <input type="date" id="dataEvento" name="dataEvento" required />
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" required />
+            <label for="taxaGarcom">Porcentagem garçom:</label>
+            <input
+              id="taxaGarcom"
+              name="taxaGarcom"
+              type="number"
+              placeholder="Digite a porcentagem do garçom"
+            />
+            <div style="display: flex; flex: 1">
+              <div style="display: flex; flex-direction: column; flex: 9">
+                <label for="nomePagante">Nome do pagante:</label>
+                <input type="text" id="nomePagante" name="nomePagante" />
+              </div>
+              <button
+                type="button"
+                style="
+                  display: flex;
+                  flex: 3;
+                  margin-left: 10px;
+                  justify-content: center;
+                  align-items: center;
+                "
+                id="btn-adicionarPagante"
+              >
+                Adicionar
+              </button>
+            </div>
+            <div
+              id="listaPagantes"
+              style="
+                padding: 5px;
+                height: 100px;
+                overflow: auto;
+                margin-top: 10px;
+                border-width: 1px;
+                border-color: black;
+                border-style: solid;
+              "
+            ></div>
+            <button type="submit" id="btn-criarEvento">Salvar</button>
+          </form>
+        </div>
+      </div>
+      <main class="conteudo-principal">
+        <h1>Lista de eventos</h1>
+        <div class="event-list-container">
+          <table class="event-list">
+            <thead>
+              <tr>
+                <th>Estabelecimento</th>
+                <th>Endereço</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="event-body"></tbody>
+          </table>
+        </div>
+      </main>
     </div>
-    
-    <script src="../../scripts/Evento.js"></script>
-</body>
+    <script src="../../scripts/base.js"></script>
+    <script src="../../scripts/evento.js"></script>
+  </body>
 </html>

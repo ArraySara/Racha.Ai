@@ -1,0 +1,65 @@
+/* Contêiner da tabela para rolagem horizontal e limite de altura */
+.event-list-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 80vh; /* Limite de altura de 90% da altura da tela */
+  -webkit-overflow-scrolling: touch; /* Melhor rolagem em dispositivos móveis */
+}
+
+/* Estilos principais da tabela */
+.event-list {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+/* Outros estilos continuam os mesmos */
+.event-list th,
+.event-list td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.event-list th {
+  background-color: #4caf50;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.event-list td {
+  font-size: 14px;
+}
+
+.event-list td:last-child {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.event-list .action-icons {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.edit-icon {
+  color: #ffc107;
+}
+
+.delete-icon {
+  color: #f44336;
+}
+
+/* Responsividade para dispositivos menores */
+@media (max-width: 768px) {
+  .event-list {
+    min-width: 600px;
+    table-layout: auto;
+  }
+}

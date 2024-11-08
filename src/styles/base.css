@@ -1,0 +1,338 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #d1e7dd;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.topo-lateral {
+  background-color: #e0e0e0;
+  padding: 10px;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  flex-direction: column;
+  border-end-end-radius: 30px;
+  border-end-start-radius: 30px;
+}
+
+.topo-lateral .user-info {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  border-radius: 20%;
+  object-fit: cover;
+}
+
+#btn-desconectar {
+  background-color: transparent;
+  border: none;
+  font-size: medium;
+  text-align: center;
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icone-desconectar {
+  margin-right: 5px;
+  width: 20px;
+}
+
+.aba-lateral {
+  width: 300px;
+  background-color: white;
+  color: black;
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 10px;
+}
+
+.menu li {
+  margin-bottom: 20px;
+}
+
+.menu button {
+  background-color: #60a429;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.menu button:hover {
+  background-color: black;
+}
+
+#btn-voltar {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-style: solid;
+}
+
+#btn-voltar:hover {
+  background-color: black;
+  color: white;
+}
+
+.conteudo-principal {
+  width: 82%;
+  padding: 30px;
+  background-color: #60a429;
+}
+
+.conteudo-principal h1 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+}
+
+.canva {
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.grupo-pessoas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.pessoa {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 5px;
+  text-align: center;
+}
+
+.pessoa .logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  border-radius: 10px;
+}
+
+.pessoa .overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 10px 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  text-align: center;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content label {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.modal-content input,
+.modal-content select {
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.modal-content button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+}
+
+.container-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#botao-fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
+}
+
+#botao-fab:hover {
+  transform: rotate(45deg);
+}
+
+#opcoes-fab {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+}
+
+.opcao-fab {
+  margin: 5px 0;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s;
+}
+
+.opcao-fab:hover {
+  background-color: #e9ecef;
+}
+
+.fab-visivel {
+  display: flex !important;
+}
+
+/* Responsividade para o ícone de menu lateral */
+.menu-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: flex;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 20;
+    color: white;
+  }
+
+  .menu-icon.fechar {
+    content: "X";
+  }
+
+  .conteudo-principal {
+    margin-left: 0;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .aba-lateral {
+    width: 70%;
+    position: fixed;
+    left: -100%;
+    top: 0;
+    z-index: 10;
+    transition: left 0.3s ease;
+  }
+
+  .aba-lateral.aberta {
+    left: 0;
+  }
+}

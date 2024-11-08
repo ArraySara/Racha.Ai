@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../../styles/Login.css">
-    <script src="../../scripts/Login.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="login">
-            <img src="../../assets/logo.png" alt="Logo Racha.Aí">
-            <h2>Usuário:</h2>
-            <form>
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" placeholder="Usuário">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" placeholder="Senha">
-                <a href="../../pages/evento/Evento.html" class="button-link">Acessar</a>
 
-            </form>
-            <a href="../../pages/usuario/UsuarioForm.html">Criar sua conta</a>
-        </div>
-        <div class="welcome">
-            <img src="../../assets/bemvindo.jpg" alt="Imagem de boas-vindas">
-        </div>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="../../styles/login.css" />
+  <script src="../../scripts/usuario.js" defer></script>
+  <link rel="shortcut icon" href="../../assets/logo.png" type="image/x-icon">
+
+  <!-- LINK DO GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="login">
+      <img src="../../assets/logo.png" alt="Logo Racha.Aí" />
+
+
+      <form id="loginForm">
+        <label for="usuario">Usuário:</label>
+        <input type="text" id="usuario" placeholder="Digite seu usuário" required />
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" placeholder="Digite sua senha" required />
+        <button type="button" class="btn" id="btn-acessar-conta">
+          Acessar
+        </button>
+
+        <a href="../../pages/usuario/UsuarioForm.html">Criar sua conta</a>
+      </form>
+
     </div>
+
+    <div class="welcome">
+      <h1 class="poppins-extrabold">Bem-vindo ao Racha.Aí</h1>
+      <img class="boas-vindas" src="../../assets/bemvindo.jpeg" alt="Imagem de boas-vindas" />
+    </div>
+  </div>
 </body>
+
 </html>
